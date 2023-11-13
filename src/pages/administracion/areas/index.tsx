@@ -15,7 +15,7 @@ const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
   hasta: dayjs(),
   filtrar: '',
-  inactivos: true
+  inactivos: false
 }
 
 export default function AreaList() {
@@ -48,7 +48,13 @@ export default function AreaList() {
     }))
   }
 
-  const handleItem = () => getData('area')
+  const handleItem = () => {
+    if (filter.inactivos) {
+      getData('area/todas')
+    } else {
+      getData('area')
+    }
+  }
 
   const getData = url => fetch(url)
 

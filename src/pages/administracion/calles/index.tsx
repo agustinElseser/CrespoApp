@@ -15,7 +15,7 @@ const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
   hasta: dayjs(),
   filtrar: '',
-  inactivos: true
+  inactivos: false
 }
 
 export default function RoadList() {
@@ -47,7 +47,13 @@ export default function RoadList() {
     }))
   }
 
-  const handleItem = () => getData('calle')
+  const handleItem = () => {
+    if (filter.inactivos) {
+      getData('calle/todas')
+    } else {
+      getData('calle')
+    }
+  }
 
   const getData = url => fetch(url)
 

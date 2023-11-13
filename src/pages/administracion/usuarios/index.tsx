@@ -17,7 +17,7 @@ const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
   hasta: dayjs(),
   filtrar: '',
-  inactivos: true
+  inactivos: false
 }
 
 export default function UserList() {
@@ -50,7 +50,13 @@ export default function UserList() {
     }))
   }
 
-  const handleItem = () => getData('admin')
+  const handleItem = () => {
+    if (filter.inactivos) {
+      getData('admin/todas')
+    } else {
+      getData('admin')
+    }
+  }
 
   const getData = url => fetch(url)
 
@@ -85,18 +91,18 @@ export default function UserList() {
         { id: 'CAPATAZ', nombre: 'CAPATAZ' },
         { id: 'JEFE', nombre: 'JEFE' }
       ],
-      validation: 'none'
+      validation: yup.string()
     },
     {
       name: 'areas',
       label: 'Area',
       select: true,
-      options: dataAreas.data,
-      validation: 'none'
+      multiple: true,
+      options: dataAreas.data
     }
   ]
 
-  const tableConfig = tableAdminUsers(handleItem, 'usuario', 'admin')
+  const tableConfig: any = tableAdminUsers(handleItem, 'usuario', 'admin')
 
   useEffect(() => {
     if (open) {

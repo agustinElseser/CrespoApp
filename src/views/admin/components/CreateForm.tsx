@@ -102,7 +102,7 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
     reset
   } = useForm({
     defaultValues,
-    mode: 'onBlur',
+    mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
@@ -170,7 +170,7 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: 4
+              gap: 8
             }}
           >
             {title === 'Seguimiento' && <DateTimePickers query={query} handleQuery={handleQuery} />}
@@ -179,7 +179,7 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
                 <Controller
                   name={item.name}
                   control={control}
-                  render={({ field: { value, onChange, onBlur } }) => (
+                  render={({ field: { value, onChange } }) => (
                     <TextField
                       size='small'
                       fullWidth
@@ -192,7 +192,6 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
                       placeholder={item.placeholder ?? ''}
                       label={item.label}
                       value={value}
-                      onBlur={onBlur}
                       onChange={onChange}
                       variant='outlined'
                       color='warning'

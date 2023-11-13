@@ -15,7 +15,7 @@ const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
   hasta: dayjs(),
   filtrar: '',
-  inactivos: true
+  inactivos: false
 }
 
 export default function NeighborhoodList() {
@@ -47,7 +47,13 @@ export default function NeighborhoodList() {
     }))
   }
 
-  const handleItem = () => getData('barrio')
+  const handleItem = () => {
+    if (filter.inactivos) {
+      getData('barrio/todas')
+    } else {
+      getData('barrio')
+    }
+  }
 
   const getData = url => fetch(url)
 

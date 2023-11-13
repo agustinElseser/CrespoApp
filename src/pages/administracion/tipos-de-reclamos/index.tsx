@@ -15,7 +15,7 @@ const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
   hasta: dayjs(),
   filtrar: '',
-  inactivos: true
+  inactivos: false
 }
 
 export default function ClaimsTypeList() {
@@ -48,7 +48,13 @@ export default function ClaimsTypeList() {
     }))
   }
 
-  const handleItem = () => getData('tipo-reclamo')
+  const handleItem = () => {
+    if (filter.inactivos) {
+      getData('tipo-reclamo/todas')
+    } else {
+      getData('tipo-reclamo')
+    }
+  }
 
   const getData = url => fetch(url)
 
@@ -81,7 +87,7 @@ export default function ClaimsTypeList() {
     }
   }, [open])
 
-  const tableConfig = TableCreate(handleItem, 'tipo-reclamo', 'tipo-reclamo', user?.rol)
+  const tableConfig = TableCreate(handleItem, 'tipo de reclamo', 'tipo-reclamo', user?.rol)
 
   return (
     <>

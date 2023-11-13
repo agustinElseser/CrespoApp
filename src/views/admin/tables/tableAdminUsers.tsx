@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react'
 import CreateForm, { IFormItem } from '../components/CreateForm'
 import DeleteForm from '../components/DeleteForm'
 import CustomChip from 'src/@core/components/mui/chip'
+import * as yup from 'yup'
 
 interface CellType {
   row: any
@@ -24,6 +25,7 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
   // ** States
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [type, setType] = useState<string>('')
+  const { fetch: getAreas, data: dataAreas } = useFetch()
 
   // ** Functions
   const handleCloseDialog = () => {
@@ -38,11 +40,40 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
 
   const inputs: IFormItem[] = [
     {
-      name: 'nombre',
-      label: item === 'calle' ? 'Nombre de la calle' : `Nombre del ${item}`,
-      value: row.nombre
+      name: 'username',
+      value: row.username,
+      label: 'Email',
+      validation: yup
+        .string()
+        .required('correo es un campo requerido.')
+        .email('Debe ingresar un correo electrónico válido.')
+    },
+    {
+      name: 'rol',
+      label: 'Rol',
+      value: row.rol,
+      select: true,
+      options: [
+        { id: 'EMPLEADO', nombre: 'EMPLEADO' },
+        { id: 'CAPATAZ', nombre: 'CAPATAZ' },
+        { id: 'JEFE', nombre: 'JEFE' }
+      ],
+      validation: yup.string()
+    },
+    {
+      name: 'areas',
+      label: 'Area',
+      value: row.areas,
+      select: true,
+      multiple: true,
+      options: dataAreas.data
     }
   ]
+  useEffect(() => {
+    if (openDialog) {
+      getAreas('area')
+    }
+  }, [openDialog])
 
   return (
     <>
@@ -103,7 +134,7 @@ export const tableAdminUsers = (handleItem, item, url) => {
       renderCell: ({ row }: CellType) => {
         return (
           <Typography noWrap variant='body2'>
-            {row.nombre}
+            {row.username}
           </Typography>
         )
       }
@@ -119,16 +150,14 @@ export const tableAdminUsers = (handleItem, item, url) => {
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', gap: 1 }}>
-            {row.rol.map((rol, index) => (
-              <CustomChip
-                key={rol}
-                skin='light'
-                size='small'
-                label={rol}
-                color={'info'}
-                sx={{ textTransform: 'capitalize', border: '1px solid' }}
-              />
-            ))}
+            <CustomChip
+              key={row.rol}
+              skin='light'
+              size='small'
+              label={row.rol}
+              color='info'
+              sx={{ textTransform: 'capitalize', border: '1px solid' }}
+            />
           </Box>
         )
       }
@@ -136,22 +165,24 @@ export const tableAdminUsers = (handleItem, item, url) => {
     {
       flex: 1,
       field: 'area',
-
       sortable: false,
       headerName: 'Area',
       renderCell: ({ row }: CellType) => {
         return (
           <Box sx={{ display: 'flex', gap: 1 }}>
-            {row.roles.map((rol, index) => (
-              <CustomChip
-                key={rol}
-                skin='light'
-                size='small'
-                label={rol}
-                color={'info'}
-                sx={{ textTransform: 'capitalize', border: '1px solid' }}
-              />
-            ))}
+            {row.areas?.map(
+              (area, index) =>
+                area.length > 0 && (
+                  <CustomChip
+                    key={area}
+                    skin='light'
+                    size='small'
+                    label={area}
+                    color='success'
+                    sx={{ textTransform: 'capitalize', border: '1px solid' }}
+                  />
+                )
+            )}
           </Box>
         )
       }
@@ -160,13 +191,13 @@ export const tableAdminUsers = (handleItem, item, url) => {
     {
       flex: 0.3,
       minWidth: 190,
-      field: 'fecha',
+      field: 'fecha_editado',
       sortable: false,
       headerName: 'Fecha',
       renderCell: ({ row }: CellType) => {
         return (
           <Typography noWrap variant='body2'>
-            {row.fecha_edit}
+            {row.fecha_editado}
           </Typography>
         )
       }
