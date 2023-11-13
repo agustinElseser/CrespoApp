@@ -1,0 +1,240 @@
+html,
+body {
+  min-height: 100%;
+  background-color: #f4f5fa !important;
+}
+
+#__next {
+  height: 100%;
+}
+
+code {
+  font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  padding: 0.1rem 0.4rem;
+  font-size: 90%;
+  color: #d400ff;
+  border-radius: 0.1335rem;
+}
+code:not([class*='language-']):before,
+code:not([class*='language-']):after {
+  content: '`';
+}
+code[class*='language-'] {
+  padding: 0;
+}
+.MuiDrawer-root {
+  z-index: 300;
+}
+header {
+  z-index: 100 !important;
+}
+
+/* Cambiar el color de fondo del reproductor en Chrome */
+audio::-webkit-media-controls-panel {
+  background-color: rgba(194, 194, 194, 0.726);
+}
+
+/* Cambiar el color de fondo del reproductor en Firefox */
+audio::-moz-range-track {
+  background-color: rgba(194, 194, 194, 0.726);
+}
+
+/* Cambiar el color de fondo del reproductor en Safari */
+audio::-webkit-slider-runnable-track {
+  background-color: rgba(194, 194, 194, 0.726);
+}
+
+/* Cambiar el color de los botones del reproductor en Chrome, Firefox y Safari */
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-pause-button,
+audio::-moz-range-thumb,
+audio::-webkit-slider-thumb {
+  background-color: rgba(194, 194, 194, 0.726);
+}
+
+.editor-container {
+  position: relative;
+  height: 420px !important;
+}
+
+.jodit-status-bar__item-right a {
+  display: none;
+}
+.blinker{
+  color: white;
+  text-shadow: 4px 4px 21px rgba(255,255,255,1);
+  justify-self: end;
+  animation: blink 1s linear infinite
+}
+@keyframes blinker{
+  50% {
+    opacity: 0;
+  }
+}
+
+.jodit-react-container {
+  height: 100%;
+  border: 1px solid rgba(194, 194, 194, 0.726);
+  border-radius: 10px;
+
+  .jodit-container {
+    height: 290px !important;
+    background-color: transparent;
+    border-radius: 10px;
+  }
+  .jodit-toolbar__box {
+    height: 115px;
+    overflow-y: scroll;
+  }
+  .jodit-workplace {
+    height: 95% !important;
+    max-height: 95% !important;
+  }
+  .jodit-status-bar {
+    height: 10%;
+    position: sticky;
+    bottom: 0;
+    z-index: 99;
+    background-color: transparent;
+  }
+  .jodit-toolbar__box:not(:empty):not(:empty) {
+    background-color: transparent;
+  }
+  .jodit-toolbar__box:not(:empty) {
+    background-color: transparent;
+  }
+  .jodit-toolbar__box {
+    background-color: transparent;
+  }
+  .jodit-container:not(.jodit_inline) {
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+  }
+  .jodit-ui-group {
+    border-radius: 10px;
+  }
+}
+
+.jodit-wysiwyg,
+.jodit-source {
+  overflow-x: hidden;
+}
+
+.jodit-wysiwyg::-webkit-scrollbar,
+.jodit-source::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.jodit-wysiwyg::-webkit-scrollbar:vertical,
+.jodit-source::-webkit-scrollbar:vertical {
+  width: 10px;
+}
+
+.jodit-wysiwyg::-webkit-scrollbar:horizontal,
+.jodit-source::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.jodit-wysiwyg::-webkit-scrollbar-thumb,
+.jodit-source::-webkit-scrollbar-thumb {
+  background-color: rgba(194, 194, 194, 0.726);
+  border-radius: 10px;
+}
+
+.jodit-wysiwyg::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #f1f1f1;
+}
+
+.jodit-source::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: none;
+}
+
+.jodit-wysiwyg::-webkit-scrollbar-button:increment,
+.jodit-wysiwyg::-webkit-scrollbar-button,
+.jodit-source::-webkit-scrollbar-button:increment,
+.jodit-source::-webkit-scrollbar-button {
+  display: none;
+}
+
+.inputPhone {
+  border-color: rgba(58, 53, 65, 0.87);
+}
+
+.inputPhone:hover {
+  border-color: rgba(58, 53, 65, 0.35) !important;
+}
+
+.inputPhone:focus {
+  border: 2px solid #9155fd !important;
+
+  box-shadow: 0 0 5px transparent !important;
+}
+
+.special-label:focus {
+  color: #9155fd !important;
+}
+.react-tel-input input:focus ~ .special-label {
+  /* Estilos para el texto cuando el input está en foco */
+  color: blue;
+}
+
+.dspXZR .blockbuilder-branding {
+  display: none !important;
+}
+
+.smartphone {
+  width: 350px;
+  height: 550px;
+  border-radius: 20px;
+  border: 20px solid red;
+  z-index: 999999999999;
+  position: absolute;
+}
+
+@media (max-width: 1250px) {
+  .boxContainer {
+    width: 350px !important;
+  }
+}
+@media (max-width: 1104px) {
+  .boxContainer {
+    width: 380px !important;
+  }
+}
+.react-tel-input .special-label {
+  top: -10px !important;
+}
+
+.react-tel-input .form-control:focus {
+  border: 1px solid #9155fd !important;
+  box-shadow: 0 0 0 1px #9155fd !important;
+}
+
+.loginSVG {
+  display: flex;
+  align-items: center;
+}
+.loginSVG svg {
+  opacity: 0.3;
+  transition: transform 300ms ease, opacity 300ms ease;
+}
+.loginSVG:hover svg {
+  transform: scale(1.3);
+  opacity: 1;
+
+  cursor: pointer;
+}
+
+.loginSVG h5 {
+  opacity: 0;
+  color: white;
+  transition: padding-right 300ms ease, opacity 300ms ease;
+}
+.loginSVG:hover h5 {
+  padding-right: 50px;
+  opacity: 1;
+}
