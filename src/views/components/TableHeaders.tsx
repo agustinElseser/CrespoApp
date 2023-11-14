@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Box, MenuItem, TextField, Button, Divider, Switch } from '@mui/material'
+import { Box, MenuItem, TextField, Button, Divider, Switch, useTheme, useMediaQuery } from '@mui/material'
 
 // ** Icon Imports
 import DatePickers from './DatePickers'
@@ -37,6 +37,8 @@ export default function TableHeaders(props: TableHeardersProps) {
   // ** Props
   const { buttons, service, handleFilter, toggle, handleDowload } = props
   const { user } = useAuth()
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
   //**States
   const [value, setValue] = useState<string>('')
 
@@ -54,8 +56,9 @@ export default function TableHeaders(props: TableHeardersProps) {
       input: (
         <TextField
           size='small'
+          color='warning'
           key={1}
-          sx={{ height: '100%', width: 200 }}
+          sx={{ height: '100%', width: isSmallScreen ? '100%' : 200 }}
           placeholder={props?.search ? `Buscar ${props.search}` : 'Buscar..'}
           onChange={e => handleInputChange(e.target.value)}
         />
@@ -67,7 +70,7 @@ export default function TableHeaders(props: TableHeardersProps) {
         <Button
           startIcon={<Icon icon='mdi:plus-circle' fontSize={22} />}
           key={item}
-          sx={{ height: '100%' }}
+          sx={{ height: '100%', width: isSmallScreen ? '80%' : 200 }}
           onClick={() => toggle(item)}
           variant='contained'
         >
@@ -88,11 +91,13 @@ export default function TableHeaders(props: TableHeardersProps) {
       id: 5,
       input: (
         <>
-          <Divider orientation='vertical' flexItem />
+          {!isSmallScreen && <Divider orientation='vertical' flexItem />}
           <Button
             startIcon={<Icon icon='mdi:file-search' fontSize={22} />}
-            variant='contained'
+            variant='outlined'
+            color='info'
             onClick={() => handleFilter('filtrar', 'find')}
+            sx={{ height: '100%', width: isSmallScreen ? '100%' : 120 }}
           >
             Buscar
           </Button>
@@ -167,6 +172,7 @@ export default function TableHeaders(props: TableHeardersProps) {
       sx={{
         p: 5,
         display: 'flex',
+        flexDirection: isSmallScreen ? 'row' : 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',

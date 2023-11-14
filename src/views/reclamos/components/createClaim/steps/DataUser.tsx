@@ -26,6 +26,7 @@ import groupByHash from '../utils/groupByHash'
 import { steps } from '../StepperCreateClaim'
 
 import { useAuth } from 'src/hooks/useAuth'
+import { BoxScroll } from '../components/BoxScroll'
 
 const CustomBox = styled(Box)(({ theme }) => ({
   '& .MuiDataGrid-footerContainer': {
@@ -136,133 +137,148 @@ export const DataUser = () => {
 
   return (
     <form key={0} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container sx={{ minHeight: 400, p: 2 }}>
-        <Grid
-          item
-          lg={6}
+      <Grid container sx={{ minHeight: 400, p: 2 }} alignContent={'space-between'}>
+        {!isSmallScreen && (
+          <Grid
+            item
+            lg={6}
+            sx={{
+              display: 'flex',
+              flexDirection: 'rows',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <Grid sx={{ minHeight: 50, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>
+                {steps[0].title}
+              </Typography>
+              <Typography variant='caption' component='p'>
+                {steps[0].subtitle}
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
+        <BoxScroll
+          className='containScroll'
           sx={{
-            display: 'flex',
-            flexDirection: 'rows',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            alignSelf: 'center',
+            width: '100%',
+            maxHeight: isSmallScreen ? '40vh' : '65vh',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            pt: 4,
+            pb: 4,
+            pr: 2
           }}
         >
-          <Grid sx={{ minHeight: 50, display: 'flex', flexDirection: 'column' }}>
-            <Typography variant='body2' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              {steps[0].title}
-            </Typography>
-            <Typography variant='caption' component='p'>
-              {steps[0].subtitle}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container rowSpacing={isSmallScreen ? 8 : 6} columnSpacing={isSmallScreen ? 2 : 6}>
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='nombre'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    size='small'
-                    value={value}
-                    color='warning'
-                    label='Nombre'
-                    onChange={onChange}
-                    disabled
-                    error={Boolean(errors.nombre)}
-                  />
-                )}
-              />
-              {errors.nombre && <FormHelperText sx={{ color: 'error.main' }}>{errors.nombre.message}</FormHelperText>}
-            </FormControl>
-          </Grid>
+          <Grid container rowSpacing={isSmallScreen ? 8 : 6} columnSpacing={isSmallScreen ? 2 : 6}>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='nombre'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      size='small'
+                      value={value}
+                      color='warning'
+                      label='Nombre'
+                      onChange={onChange}
+                      disabled
+                      error={Boolean(errors.nombre)}
+                    />
+                  )}
+                />
+                {errors.nombre && <FormHelperText sx={{ color: 'error.main' }}>{errors.nombre.message}</FormHelperText>}
+              </FormControl>
+            </Grid>
 
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='dni'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    size='small'
-                    disabled
-                    value={value}
-                    color='warning'
-                    label='Documento de identidad'
-                    onChange={onChange}
-                    error={Boolean(errors.dni)}
-                  />
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='dni'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      size='small'
+                      disabled
+                      value={value}
+                      color='warning'
+                      label='Documento de identidad'
+                      onChange={onChange}
+                      error={Boolean(errors.dni)}
+                    />
+                  )}
+                />
+                {errors.dni && <FormHelperText sx={{ color: 'error.main' }}>{errors.dni.message}</FormHelperText>}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='telefono'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      size='small'
+                      value={value}
+                      disabled
+                      color='warning'
+                      label='Teléfono'
+                      onChange={onChange}
+                      error={Boolean(errors.telefono)}
+                    />
+                  )}
+                />
+                {errors.telefono && (
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.telefono.message}</FormHelperText>
                 )}
-              />
-              {errors.dni && <FormHelperText sx={{ color: 'error.main' }}>{errors.dni.message}</FormHelperText>}
-            </FormControl>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='correo'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      size='small'
+                      value={value}
+                      disabled
+                      color='warning'
+                      label='Correo'
+                      onChange={onChange}
+                      error={Boolean(errors.correo)}
+                    />
+                  )}
+                />
+                {errors.correo && <FormHelperText sx={{ color: 'error.main' }}>{errors.correo.message}</FormHelperText>}
+              </FormControl>
+            </Grid>
+            <Grid item md={12}>
+              <Alert icon={<Icon icon='mdi:chat-alert-outline' fontSize={26} />} severity='error' sx={{ mb: 4 }}>
+                <AlertTitle sx={{ fontWeight: 600, mb: theme => `${theme.spacing(1)} !important` }}>
+                  Verifique sus datos de contacto
+                </AlertTitle>
+                <Typography variant='body2' component='p'>
+                  Las notificaciones de sus reclamos llegarán a sus datos de contacto establecidos, en caso de requerir
+                  cambiarlos deberá modificar su perfil previamente.
+                </Typography>
+              </Alert>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='telefono'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    size='small'
-                    value={value}
-                    disabled
-                    color='warning'
-                    label='Teléfono'
-                    onChange={onChange}
-                    error={Boolean(errors.telefono)}
-                  />
-                )}
-              />
-              {errors.telefono && (
-                <FormHelperText sx={{ color: 'error.main' }}>{errors.telefono.message}</FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='correo'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    size='small'
-                    value={value}
-                    disabled
-                    color='warning'
-                    label='Correo'
-                    onChange={onChange}
-                    error={Boolean(errors.correo)}
-                  />
-                )}
-              />
-              {errors.correo && <FormHelperText sx={{ color: 'error.main' }}>{errors.correo.message}</FormHelperText>}
-            </FormControl>
-          </Grid>
-          <Grid item md={12}>
-            <Alert icon={<Icon icon='mdi:chat-alert-outline' fontSize={26} />} severity='error' sx={{ mb: 4 }}>
-              <AlertTitle sx={{ fontWeight: 600, mb: theme => `${theme.spacing(1)} !important` }}>
-                Verifique sus datos de contacto
-              </AlertTitle>
-              <Typography variant='body2' component='p'>
-                Las notificaciones de sus reclamos llegarán a sus datos de contacto establecidos, en caso de requerir
-                cambiarlos deberá modificar su perfil previamente.
-              </Typography>
-            </Alert>
-          </Grid>
-        </Grid>
-
-        <Grid container sx={{ alignSelf: 'end', justifyContent: 'space-between', mt: 8 }}>
-          <Button size='small' variant='outlined' color='secondary' disabled>
+        </BoxScroll>
+        <Grid container sx={{ alignSelf: 'end', justifyContent: 'space-between', mt: 8, gap: 5 }}>
+          <Button size='small' variant='outlined' color='secondary' disabled sx={isSmallScreen ? { flex: 1 } : {}}>
             Atrás
           </Button>
 
-          <Button size='small' type='submit' variant='contained'>
+          <Button size='small' type='submit' variant='contained' sx={isSmallScreen ? { flex: 1 } : {}}>
             Siguiente
           </Button>
         </Grid>

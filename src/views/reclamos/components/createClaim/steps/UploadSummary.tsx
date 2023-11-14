@@ -10,12 +10,15 @@ import Typography from '@mui/material/Typography'
 // ** Components
 import { ClaimContext } from '../context/ClaimContext'
 
-import { Box, CircularProgress, styled } from '@mui/material'
+import { Box, CircularProgress, styled, useMediaQuery, useTheme } from '@mui/material'
 
 import { useForm } from 'react-hook-form'
 
 import toast from 'react-hot-toast'
 import generateSummary from '../utils/generateSummary'
+import DropzoneImg from '../components/DropzoneImg'
+import { Icon } from '@iconify/react'
+import MapComponent from '../components/Maps'
 
 interface IFormItem3 {
   images: string[]
@@ -54,6 +57,8 @@ export const UploadSummary = ({ handleClose }: any) => {
       if (file) {
         const result = await uploadFile(file)
         const reader = new FileReader()
+
+        //@ts-ignore
         setFormData(prevFormData => ({
           ...prevFormData,
           image: [...prevFormData.image, result]
@@ -71,9 +76,13 @@ export const UploadSummary = ({ handleClose }: any) => {
     await handleFinished(formData.image)
   }
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   return (
-    <Grid container spacing={5} sx={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <Grid container sx={{ minHeight: 400 }} alignContent={'space-between'} justifyContent={'center'}>
+      <DropzoneImg />
+      {/* <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label className='block uppercase text-blueGray-600 text-xs font-bold mb-2'>Agrega imagenes *</label>
           <input
@@ -83,34 +92,53 @@ export const UploadSummary = ({ handleClose }: any) => {
             onChange={e => handleImageChange(e)}
             placeholder='Sube tu foto de perfil'
           />
-        </div>
+        </div> */}
 
-        {formData
-          ? formData.image.map((e, index) => (
-              <div style={{ display: 'flex', flexDirection: 'row' }} key={index}>
-                <img
-                  style={{
-                    maxHeight: '200px',
-                    maxWidth: '300px',
-                    display: 'flex',
-                    flexDirection: 'row'
-                  }}
-                  src={e}
-                  alt='Imagen subida'
-                />
-              </div>
-            ))
-          : null}
-        {/* <button
+      {/* {formData
+        ? formData.image.map((e, index) => (
+            <div style={{ display: 'flex', flexDirection: 'row' }} key={index}>
+              <img
+                style={{
+                  maxHeight: '200px',
+                  maxWidth: '300px',
+                  display: 'flex',
+                  flexDirection: 'row'
+                }}
+                src={e}
+                alt='Imagen subida'
+              />
+            </div>
+          ))
+        : null} */}
+      {/* <button
             onClick={() => handleFinish()}
             style={{ position: "absolute", bottom: "10px", right: "10px" }}
           >
             Finalizar
           </button> */}
-        <Button size='small' onClick={() => handleSend()} variant='contained'>
-          Finalizar
+
+      <Grid container sx={{ alignSelf: 'end', justifyContent: 'space-between', mt: 8, gap: 5 }}>
+        <Button
+          size='small'
+          variant='outlined'
+          color='secondary'
+          onClick={() => handleBack()}
+          //startIcon={<Icon fontSize={22} color='warning' icon='mdi:arrow-left-circle' />}
+          sx={isSmallScreen ? { flex: 1 } : {}}
+        >
+          Atrás
         </Button>
-      </div>
+
+        <Button
+          size='small'
+          onClick={() => handleSend()}
+          variant='contained'
+          startIcon={<Icon fontSize={22} color='warning' icon='mdi:receipt-text-arrow-right' />}
+          sx={isSmallScreen ? { flex: 1 } : {}}
+        >
+          Enviar
+        </Button>
+      </Grid>
     </Grid>
   )
 }

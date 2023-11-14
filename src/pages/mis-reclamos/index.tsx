@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
-import { useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
 import { useFetch } from 'src/hooks/useFetch'
 import { dataToExcel } from 'src/views/utils/dataToExcel'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
@@ -29,7 +29,9 @@ export default function MyClaimsList() {
 
   //** Hooks
   const { fetch, data, loading } = useFetch()
+
   const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   // ** Functions
   const handleClose = () => setOpen(false)
@@ -64,7 +66,7 @@ export default function MyClaimsList() {
         <Grid item xs={12}>
           <Card>
             <TableHeaders
-              buttons={[2, 6, 1, 4, 5]}
+              buttons={isSmallScreen ? [2, 3] : [2, 6, 1, 4, 5]}
               buttonsTitle={['nuevo reclamo']}
               handleFilter={handleFilter}
               toggle={toggleModal}

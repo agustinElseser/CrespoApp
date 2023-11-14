@@ -39,6 +39,7 @@ export interface IQuery {
   entre_calle2: Idata
   calle_interseccion: Idata
   descripcion: string
+  img: any
 }
 
 interface IChildren {
@@ -56,6 +57,7 @@ export const SpeechProvider = ({ children, close }: IChildren) => {
 
   // ** States
   const [activeStep, setActiveStep] = useState<number>(0)
+  //@ts-ignore
   const [query, setQuery] = useState<IQuery>(null)
   const [error, setError] = useState(true)
   const [image, setImages] = useState<any[]>([])
@@ -85,14 +87,25 @@ export const SpeechProvider = ({ children, close }: IChildren) => {
 
   const handleFinished = async () => {
     console.log(query)
+
     fetch('usuario-reclamo', {
       method: 'POST',
       data: query
     })
-    toast.success('Reclamo creado.', {
-      duration: 5000
-    })
-    close()
+      .then(data => {
+        toast.success('Reclamo enviado.', {
+          duration: 5000
+        })
+        close()
+      })
+      .catch(error => {
+        toast.error(error.response.data.msg, {
+          duration: 5000,
+          style: {
+            zIndex: 999999999999
+          }
+        })
+      })
   }
 
   return (

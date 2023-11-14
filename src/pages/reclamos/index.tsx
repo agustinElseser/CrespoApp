@@ -3,12 +3,8 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
 import Typography from '@mui/material/Typography'
-import StepperLoadAudio from 'src/views/apps/speech/uploadAudio/StepperLoadAudio'
 import { Dialog, useTheme } from '@mui/material'
-import { SpeechProvider } from 'src/views/apps/speech/uploadAudio/context/SpeechContext'
-import StepperCreateAnalysis from 'src/views/apps/speech/createAnalysis/StepperCreateAnalysis'
-import { AnalysisProvider } from 'src/views/apps/speech/createAnalysis/context/AnalysisContext'
-import { ColumnsAudios } from 'src/views/apps/speech/tables/tableAudios'
+
 import { useFetch } from 'src/hooks/useFetch'
 import { dataToExcel } from 'src/views/utils/dataToExcel'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
@@ -77,7 +73,7 @@ export default function AudioList() {
               filter={filter}
             />
             <DataGrid
-              rows={data ?? []}
+              rows={data.data ?? []}
               columns={tableClaimsAdmin}
               autoHeight
               disableColumnMenu

@@ -6,7 +6,8 @@ import { DateValidationError } from '@mui/x-date-pickers/models'
 import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
 import { IQuery } from './ReportsFilter'
-import { IQuerySA } from '../apps/speech/uploadAudio/context/SpeechContext'
+
+import { useMediaQuery, useTheme } from '@mui/material'
 
 dayjs.locale(es)
 
@@ -17,6 +18,9 @@ interface DatePickersProps {
 }
 
 export default function DatePickers({ filter, handleFilter, disabled }: DatePickersProps) {
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   //** States
   const [startError, setStartError] = useState<DateValidationError | null>(null)
   const [endError, setEndError] = useState<DateValidationError | null>(null)
@@ -80,6 +84,7 @@ export default function DatePickers({ filter, handleFilter, disabled }: DatePick
               actions: []
             },
             textField: {
+              color: 'warning',
               size: 'small',
               variant: 'outlined',
               helperText: startErrorMessage
@@ -98,7 +103,7 @@ export default function DatePickers({ filter, handleFilter, disabled }: DatePick
               }
             }
           }}
-          sx={{ width: '250px' }}
+          sx={{ width: isSmallScreen ? '100%' : 250 }}
           maxDate={filter.hasta}
           disableFuture
           onError={newError => setStartError(newError)}
@@ -118,6 +123,7 @@ export default function DatePickers({ filter, handleFilter, disabled }: DatePick
               actions: []
             },
             textField: {
+              color: 'warning',
               size: 'small',
               variant: 'outlined',
               helperText: endErrorMessage
@@ -136,7 +142,7 @@ export default function DatePickers({ filter, handleFilter, disabled }: DatePick
               }
             }
           }}
-          sx={{ width: '250px' }}
+          sx={{ width: isSmallScreen ? '100%' : 250 }}
         />
       </LocalizationProvider>
     </>

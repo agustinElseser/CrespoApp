@@ -89,6 +89,7 @@ export default function SearchFilter({ service, title, handleFilter }: IProps) {
   const handleFind = () => {
     handleFilter('desde', query.desde)
     handleFilter('hasta', query.hasta)
+    handleFilter('value', query.hasta)
 
     setAnchorEl(null)
   }
@@ -105,16 +106,25 @@ export default function SearchFilter({ service, title, handleFilter }: IProps) {
     <>
       <Button
         sx={{ minWidth: '3rem', p: 0, height: '2.5rem' }}
-        variant='contained'
+        variant='outlined'
         aria-controls='simple-menu'
         aria-haspopup='true'
+        color='info'
         onClick={handleClick}
       >
         <Icon icon='mdi:cog-outline' fontSize={22} />
       </Button>
       <Menu keepMounted id='simple-menu' anchorEl={anchorEl} onClose={handleClose} open={Boolean(anchorEl)}>
         <Box sx={{ display: 'flex', flexDirection: 'column', p: 4, gap: '1.5rem' }}>
-          <Divider sx={{ mt: '0px!important', mb: '0px!important' }} />
+          <TextField
+            size='small'
+            color='warning'
+            key={1}
+            sx={{ height: '100%', width: '100%' }}
+            placeholder={'Buscar..'}
+            onChange={e => handleQuery('value', e.target.value)}
+          />
+
           {filterFact && (
             <>
               <Switch checked={switchState.switch1} onChange={() => handleSwitchChange()} size='small' />
@@ -125,8 +135,13 @@ export default function SearchFilter({ service, title, handleFilter }: IProps) {
           )}
 
           <DatePickers filter={query} handleFilter={handleQuery} disabled={switchState.switch1} />
-          <Button variant='contained' onClick={handleFind}>
-            Filtrar
+          <Button
+            color='info'
+            onClick={handleFind}
+            startIcon={<Icon icon='mdi:file-search' fontSize={22} />}
+            variant='outlined'
+          >
+            Buscar
           </Button>
         </Box>
       </Menu>
