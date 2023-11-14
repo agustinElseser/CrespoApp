@@ -11,7 +11,7 @@ import { TableCreate } from 'src/views/admin/tables/tableCreate'
 import CreateForm, { IFormItem } from 'src/views/admin/components/CreateForm'
 import { useAuth } from 'src/hooks/useAuth'
 import * as yup from 'yup'
-import { tableAdminUsers } from 'src/views/admin/tables/tableAdminUsers'
+import { TableAdminUsers } from 'src/views/admin/tables/tableAdminUsers'
 
 const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
@@ -102,7 +102,7 @@ export default function UserList() {
     }
   ]
 
-  const tableConfig: any = tableAdminUsers(handleItem, 'usuario', 'admin')
+  const tableConfig: any = TableAdminUsers(handleItem, 'usuario', 'admin')
 
   useEffect(() => {
     if (open) {

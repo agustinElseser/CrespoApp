@@ -66,8 +66,8 @@ const AuthProvider = ({ children }: Props) => {
         }
       })
       .catch(err => {
-        console.log(err.response.data.message)
-        if (err.response.data.message == 'Invalid credentials') {
+        console.log(err.response?.data?.message)
+        if (err.response?.data?.message == 'Invalid credentials') {
           toast.error('Contraseña incorrecta.')
         } else {
           toast.error('No es posible ingresar. Contáctese con soporte.')

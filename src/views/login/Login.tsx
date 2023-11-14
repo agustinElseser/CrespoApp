@@ -60,11 +60,14 @@ const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-const TextFieldWrapper = styled(TextField)<TextFieldProps>(({ theme }) => ({
+export const TextFieldWrapper = styled(TextField)<TextFieldProps>(({ theme }) => ({
   '& .MuiInputBase-input.MuiFilledInput-input': {
-    color: 'black',
+    color: 'white',
     backdropFilter: 'blur(5px)',
     backgroundColor: 'none'
+  },
+  '& .MuiFormLabel-root': {
+    color: 'white'
   }
 }))
 
@@ -170,24 +173,31 @@ export default function Login({ handleForm }) {
 
   return (
     <>
-      <Box
-        sx={{
-          width: '400px'
-        }}
-      >
-        <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
-          <FormControl fullWidth sx={{ mb: 6 }}>
+      <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8
+          }}
+        >
+          <FormControl fullWidth>
             <Controller
               name='username'
               control={control}
               rules={{ required: true }}
-              render={({ field: { value, onChange, onBlur } }) => (
+              render={({ field: { value, onChange } }) => (
                 <TextFieldWrapper
-                  sx={{ backgroundColor: 'white', color: 'red', borderRadius: '5px 5px 5px 5px' }}
+                  sx={{
+                    backgroundColor: 'none',
+                    backdropFilter: 'blur(12px)',
+                    color: 'white',
+                    borderRadius: '5px 5px 5px 5px'
+                  }}
                   label='Username'
-                  color='secondary'
+                  color='warning'
                   value={value}
-                  onBlur={onBlur}
                   onChange={onChange}
                   variant='filled'
                   error={Boolean(errors.username)}
@@ -199,85 +209,50 @@ export default function Login({ handleForm }) {
             {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
           </FormControl>
 
-          <>
-            <FormControl fullWidth sx={{ mb: 6 }}>
-              <Controller
-                name='password'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextFieldWrapper
-                    className='textFieldLogin'
-                    sx={{ backgroundColor: 'white', color: 'gray', borderRadius: '5px 5px 5px 5px' }}
-                    label='Contraseña'
-                    color='secondary'
-                    value={value}
-                    type={showActPassword ? 'text' : 'password'}
-                    onBlur={onBlur}
-                    autoFocus
-                    onChange={onChange}
-                    variant='filled'
-                    error={Boolean(errors.password)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            edge='end'
-                            onClick={() => setShowActPassword(!showActPassword)}
-                            aria-label='toggle password visibility'
-                          >
-                            <Icon icon={showActPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                )}
-              />
-
-              {errors.password && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.password.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-
-            {auth.companies && auth?.companies.length > 1 ? (
-              <FormControl fullWidth sx={{ mb: 6 }}>
-                <Controller
-                  name='id_cliente'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange, onBlur } }) => (
-                    <TextFieldWrapper
-                      select
-                      sx={{ backgroundColor: 'white', color: 'gray', borderRadius: '5px 5px 5px 5px' }}
-                      label='Seleccione una empresa'
-                      value={value}
-                      type={'select'}
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      variant='filled'
-                      error={Boolean(errors.id_cliente)}
-                    >
-                      {auth.companies?.map(company => {
-                        return (
-                          <MenuItem key={company.id} value={company.id}>
-                            {company.nombre}
-                          </MenuItem>
-                        )
-                      })}
-                    </TextFieldWrapper>
-                  )}
+          <FormControl fullWidth>
+            <Controller
+              name='password'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <TextFieldWrapper
+                  className='textFieldLogin'
+                  sx={{
+                    backgroundColor: 'none',
+                    backdropFilter: 'blur(12px)',
+                    color: 'white',
+                    borderRadius: '5px 5px 5px 5px'
+                  }}
+                  label='Contraseña'
+                  color='warning'
+                  value={value}
+                  type={showActPassword ? 'text' : 'password'}
+                  onChange={onChange}
+                  variant='filled'
+                  error={Boolean(errors.password)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          edge='end'
+                          onClick={() => setShowActPassword(!showActPassword)}
+                          aria-label='toggle password visibility'
+                        >
+                          <Icon icon={showActPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} color='white' />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
-                {errors.id_cliente && (
-                  <FormHelperText sx={{ color: 'error.main' }} id=''>
-                    {errors.id_cliente.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            ) : null}
-          </>
+              )}
+            />
+
+            {errors.password && (
+              <FormHelperText sx={{ color: 'error.main' }} id=''>
+                {errors.password.message}
+              </FormHelperText>
+            )}
+          </FormControl>
 
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer' }}>
             <Button fullWidth size='large' type='submit' variant='contained' onClick={handleSubmit(onSubmit)}>
@@ -298,8 +273,9 @@ export default function Login({ handleForm }) {
               <Icon icon='mdi:account-plus' fontSize={20} color='white' />
             </Box>
           </Box>
-        </form>
-      </Box>
+        </Box>
+      </form>
+
       <ResetPassword handleCloseDialog={handleClose} open={open} />
     </>
   )

@@ -16,13 +16,14 @@ import MuiCard, { CardProps } from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 import { Icon } from '@iconify/react'
+import { TextFieldWrapper } from './Login'
 
 interface State {
   password: string
   showPassword: boolean
   repeatPassword: string
   name: string
-  surname: string
+  username: string
   email: string
 }
 
@@ -37,17 +38,17 @@ export default function Register({ handleForm }) {
     repeatPassword: '',
     email: '',
     name: '',
-    surname: ''
+    username: ''
   }
 
   const schema = yup.object().shape({
-    name: yup.string().required('Nombre es un campo requerido.'),
-    surname: yup.string().required('Apellido es un campo requerido.'),
-    email: yup.string().required('Email es un campo requerido.').email('Debe ingresar un correo electrónico válido.'),
-    password: yup.string().required('Nombre es un campo requerido.'),
+    name: yup.string().required('*Nombre es un campo requerido.'),
+    username: yup.string().required('*Apellido es un campo requerido.'),
+    email: yup.string().required('*Email es un campo requerido.').email('*Debe ingresar un email válido.'),
+    password: yup.string().required('*Campo requerido.'),
     repeatPassword: yup
       .string()
-      .required('Repetir contraseña es un campo requerido.')
+      .required('*Campo requerido.')
       .oneOf([yup.ref('password')], 'Las contraseñas deben coincidir.')
   })
   const {
@@ -105,26 +106,30 @@ export default function Register({ handleForm }) {
   // };
 
   return (
-    <Box
-      sx={{
-        width: '400px'
-      }}
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl fullWidth sx={{ mb: 6 }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8
+        }}
+      >
+        <FormControl fullWidth>
           <Controller
             name='name'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
-              <TextField
+              <TextFieldWrapper
                 sx={{
-                  backgroundColor: 'white',
-                  color: 'red',
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 label='Nombre'
-                color='secondary'
+                color='warning'
                 size='small'
                 value={value}
                 onChange={onChange}
@@ -136,16 +141,17 @@ export default function Register({ handleForm }) {
 
           {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
         </FormControl>
-        <FormControl fullWidth sx={{ mb: 6 }}>
+        <FormControl fullWidth>
           <Controller
-            name='surname'
+            name='username'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
-              <TextField
+              <TextFieldWrapper
                 sx={{
-                  backgroundColor: 'white',
-                  color: 'red',
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 label='Apellido'
@@ -153,24 +159,25 @@ export default function Register({ handleForm }) {
                 value={value}
                 onChange={onChange}
                 variant='filled'
-                color='secondary'
-                error={Boolean(errors.surname)}
+                color='warning'
+                error={Boolean(errors.username)}
               />
             )}
           />
 
-          {errors.surname && <FormHelperText sx={{ color: 'error.main' }}>{errors.surname.message}</FormHelperText>}
+          {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
         </FormControl>
-        <FormControl fullWidth sx={{ mb: 6 }}>
+        <FormControl fullWidth>
           <Controller
             name='email'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
-              <TextField
+              <TextFieldWrapper
                 sx={{
-                  backgroundColor: 'white',
-                  color: 'red',
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 label='Email'
@@ -178,30 +185,31 @@ export default function Register({ handleForm }) {
                 value={value}
                 onChange={onChange}
                 variant='filled'
-                color='secondary'
+                color='warning'
                 error={Boolean(errors.email)}
-              ></TextField>
+              ></TextFieldWrapper>
             )}
           />
 
           {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
         </FormControl>
-        <FormControl fullWidth sx={{ mb: 6 }}>
+        <FormControl fullWidth>
           <Controller
             name='password'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
-              <TextField
+              <TextFieldWrapper
                 size='small'
                 value={value}
                 label='Nueva contraseña'
                 onChange={onChange}
                 variant='filled'
-                color='secondary'
+                color='warning'
                 sx={{
-                  backgroundColor: 'white',
-                  color: 'red',
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 placeholder='Nueva contraseña'
@@ -215,7 +223,7 @@ export default function Register({ handleForm }) {
                         onClick={() => setShowNewPassword(!showNewPassword)}
                         aria-label='toggle password visibility'
                       >
-                        <Icon icon={showNewPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
+                        <Icon icon={showNewPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} color='white' />
                       </IconButton>
                     </InputAdornment>
                   )
@@ -225,22 +233,23 @@ export default function Register({ handleForm }) {
           />
           {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
         </FormControl>
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl fullWidth>
           <Controller
             name='repeatPassword'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
-              <TextField
+              <TextFieldWrapper
                 size='small'
                 value={value}
                 label='Repetir contraseña'
                 onChange={onChange}
                 variant='filled'
-                color='secondary'
+                color='warning'
                 sx={{
-                  backgroundColor: 'white',
-                  color: 'red',
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 placeholder='Repetir contraseña'
@@ -254,7 +263,7 @@ export default function Register({ handleForm }) {
                         onClick={() => setShowRepeatPassword(!showRepeatPassword)}
                         aria-label='toggle password visibility'
                       >
-                        <Icon icon={showNewPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
+                        <Icon icon={showNewPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} color='white' />
                       </IconButton>
                     </InputAdornment>
                   )
@@ -264,7 +273,7 @@ export default function Register({ handleForm }) {
           />
           {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
         </FormControl>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: 'pointer', mt: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: 'pointer', mt: 0 }}>
           <Button fullWidth size='large' type='submit' variant='contained'>
             Registrarse
           </Button>
@@ -278,7 +287,7 @@ export default function Register({ handleForm }) {
             <Icon icon='mdi:login' fontSize={20} color='white' />
           </Box>
         </Box>
-      </form>
-    </Box>
+      </Box>
+    </form>
   )
 }

@@ -25,7 +25,7 @@ import { useAuth } from 'src/hooks/useAuth'
 
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
-import { IconButton, InputAdornment, Link, MenuItem, Stack } from '@mui/material'
+import { IconButton, InputAdornment, Link, MenuItem, Stack, useMediaQuery, useTheme } from '@mui/material'
 
 import { Icon } from '@iconify/react'
 import ResetPassword from 'src/views/components/ResetPassword'
@@ -36,10 +36,11 @@ import Login from 'src/views/login/Login'
 
 const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down('xl')]: {
-    width: '100%'
+    width: 450
   },
+  width: 450,
   [theme.breakpoints.down('md')]: {
-    maxWidth: 400
+    maxWidth: 350
   },
   padding: 30,
   borderRadius: 15,
@@ -117,6 +118,9 @@ const LoginPage = () => {
     setFormLogin(!formLogin)
   }
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   return (
     <>
       <Box
@@ -132,19 +136,23 @@ const LoginPage = () => {
       >
         <Box
           sx={{
-            p: 12
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
           <BoxWrapper>
-            <Stack direction='column' justifyContent='center' alignItems='center' spacing={15}>
-              <Stack direction='column' justifyContent='center' alignItems='center' spacing={10}>
+            <Stack direction='column' justifyContent='center' alignItems='center' gap={6}>
+              <Stack direction='column' justifyContent='center' alignItems='center' spacing={4}>
                 <img
                   src='http://crespo.gob.ar/wp-content/uploads/2019/01/escudo-encabezado2.png'
-                  width='300'
+                  width='90%'
                   alt='Municipalidad de la Ciudad de Crespo'
                   id='logo'
                 />
-                <Typography variant='body1' noWrap color='white'>
+                <Typography variant='body2' noWrap color='white'>
                   Bienvenido/a, a la plataforma de gestión.
                 </Typography>
               </Stack>

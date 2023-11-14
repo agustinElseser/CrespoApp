@@ -1,5 +1,5 @@
 import { Box } from '@mui/system'
-import { Typography } from '@mui/material'
+import { Switch, Typography } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useFetch } from 'src/hooks/useFetch'
@@ -8,6 +8,7 @@ import CreateForm, { IFormItem } from '../components/CreateForm'
 import DeleteForm from '../components/DeleteForm'
 import CustomChip from 'src/@core/components/mui/chip'
 import * as yup from 'yup'
+import toast from 'react-hot-toast'
 
 interface CellType {
   row: any
@@ -78,7 +79,7 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton color='warning'>
+        <IconButton color='info'>
           <Icon icon='mdi:file-eye' fontSize={26} />
         </IconButton>
         <IconButton color='info' onClick={() => handleOpenDialog('edit')}>
@@ -124,7 +125,29 @@ interface ColumnItem {
   renderCell: ({ row }: CellType) => void
 }
 
-export const tableAdminUsers = (handleItem, item, url) => {
+export const TableAdminUsers = (handleItem, item, url) => {
+  const { fetch, data, loading } = useFetch()
+
+  const handleActive = (id, status) => {
+    fetch(`${url}/${id}`, {
+      method: status === false ? 'POST' : 'PUT'
+    })
+      .then(data => {
+        toast.success(data.data.msg, {
+          duration: 5000
+        })
+        handleItem()
+      })
+      .catch(error => {
+        toast.error(error.response.data.msg, {
+          duration: 5000,
+          style: {
+            zIndex: 999999999999
+          }
+        })
+      })
+  }
+
   const tableConfig = [
     {
       flex: 0.7,
@@ -152,10 +175,10 @@ export const tableAdminUsers = (handleItem, item, url) => {
           <Box sx={{ display: 'flex', gap: 1 }}>
             <CustomChip
               key={row.rol}
-              skin='light'
               size='small'
+              skin='light'
               label={row.rol}
-              color='info'
+              color='warning'
               sx={{ textTransform: 'capitalize', border: '1px solid' }}
             />
           </Box>
@@ -199,6 +222,19 @@ export const tableAdminUsers = (handleItem, item, url) => {
           <Typography noWrap variant='body2'>
             {row.fecha_editado}
           </Typography>
+        )
+      }
+    },
+    {
+      flex: 0.3,
+      field: 'activo',
+      sortable: false,
+      align: 'center',
+      headerAlign: 'center',
+      headerName: 'Activo',
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Switch size='small' color='info' checked={row.activo} onClick={() => handleActive(row.id, row.activo)} />
         )
       }
     },

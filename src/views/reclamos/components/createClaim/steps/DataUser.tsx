@@ -18,7 +18,7 @@ import { Icon } from '@iconify/react'
 
 // ** Styled Components
 import { useFetch } from 'src/hooks/useFetch'
-import { Alert, AlertTitle, FormHelperText, MenuItem, TextField, styled } from '@mui/material'
+import { Alert, AlertTitle, FormHelperText, MenuItem, TextField, styled, useMediaQuery, useTheme } from '@mui/material'
 
 import { ClaimContext } from '../context/ClaimContext'
 
@@ -131,6 +131,9 @@ export const DataUser = () => {
     setActiveStep(activeStep + 1)
   }
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   return (
     <form key={0} onSubmit={handleSubmit(onSubmit)}>
       <Grid container sx={{ minHeight: 400, p: 2 }}>
@@ -153,8 +156,8 @@ export const DataUser = () => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid container spacing={3}>
-          <Grid item md={6}>
+        <Grid container rowSpacing={isSmallScreen ? 8 : 6} columnSpacing={isSmallScreen ? 2 : 6}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <Controller
                 name='nombre'
@@ -176,7 +179,7 @@ export const DataUser = () => {
             </FormControl>
           </Grid>
 
-          <Grid item md={6}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <Controller
                 name='dni'
@@ -197,7 +200,7 @@ export const DataUser = () => {
               {errors.dni && <FormHelperText sx={{ color: 'error.main' }}>{errors.dni.message}</FormHelperText>}
             </FormControl>
           </Grid>
-          <Grid item md={6}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <Controller
                 name='telefono'
@@ -220,7 +223,7 @@ export const DataUser = () => {
               )}
             </FormControl>
           </Grid>
-          <Grid item md={6}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <Controller
                 name='correo'
@@ -254,7 +257,7 @@ export const DataUser = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', mt: 8 }}>
+        <Grid container sx={{ alignSelf: 'end', justifyContent: 'space-between', mt: 8 }}>
           <Button size='small' variant='outlined' color='secondary' disabled>
             Atrás
           </Button>

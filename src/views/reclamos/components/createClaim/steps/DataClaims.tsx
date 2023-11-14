@@ -18,7 +18,7 @@ import { Icon } from '@iconify/react'
 
 // ** Styled Components
 import { useFetch } from 'src/hooks/useFetch'
-import { FormHelperText, MenuItem, TextField, styled } from '@mui/material'
+import { FormHelperText, MenuItem, TextField, styled, useMediaQuery, useTheme } from '@mui/material'
 
 import { ClaimContext } from '../context/ClaimContext'
 
@@ -26,6 +26,7 @@ import groupByHash from '../utils/groupByHash'
 import { steps } from '../StepperCreateClaim'
 import { useAuth } from 'src/hooks/useAuth'
 import { idID } from '@mui/material/locale'
+import { BoxScroll } from 'src/views/components/BoxScroll'
 
 const CustomBox = styled(Box)(({ theme }) => ({
   '& .MuiDataGrid-footerContainer': {
@@ -115,6 +116,10 @@ export const DataClaims = () => {
   })
 
   // **Functions
+  const handleBack = () => {
+    setActiveStep(activeStep - 1)
+  }
+
   const findDataById = (key, id) => {
     switch (key) {
       case 'tipo_reclamo':
@@ -182,6 +187,9 @@ export const DataClaims = () => {
     })
   }, [])
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   return (
     <form key={0} onSubmit={handleSubmit(onSubmit)}>
       <Grid container sx={{ minHeight: 400 }}>
@@ -204,297 +212,310 @@ export const DataClaims = () => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid container spacing={3} rowGap={4}>
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='tipo_reclamo'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    select
-                    label='Tipo de reclamo'
-                    value={value}
-                    size='small'
-                    type={'select'}
-                    onBlur={onBlur}
-                    color='warning'
-                    onChange={onChange}
-                    variant='outlined'
-                    error={Boolean(errors.tipo_reclamo)}
-                  >
-                    {tiposReclamo.length > 0 ? (
-                      tiposReclamo?.map(reclamo => (
-                        <MenuItem key={reclamo.id} value={reclamo.id}>
-                          {reclamo.nombre}
+        <BoxScroll
+          className='containScroll'
+          sx={{
+            alignSelf: 'center',
+            width: '100%',
+            maxHeight: isSmallScreen ? '50vh' : '65vh',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            pt: 4,
+            pb: 4,
+            pr: 2
+          }}
+        >
+          <Grid container spacing={3} rowGap={4}>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='tipo_reclamo'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      select
+                      label='Tipo de reclamo'
+                      value={value}
+                      size='small'
+                      type={'select'}
+                      onBlur={onBlur}
+                      color='warning'
+                      onChange={onChange}
+                      variant='outlined'
+                      error={Boolean(errors.tipo_reclamo)}
+                    >
+                      {tiposReclamo.length > 0 ? (
+                        tiposReclamo?.map(reclamo => (
+                          <MenuItem key={reclamo.id} value={reclamo.id}>
+                            {reclamo.nombre}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem key={'No hay metadata'} value={undefined}>
+                          No hay metadata disponible
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={'No hay metadata'} value={undefined}>
-                        No hay metadata disponible
-                      </MenuItem>
-                    )}
-                  </TextField>
+                      )}
+                    </TextField>
+                  )}
+                />
+                {errors.tipo_reclamo && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.tipo_reclamo.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.tipo_reclamo && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.tipo_reclamo.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='barrio'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    select
-                    label='Seleccione un barrio o loteo'
-                    value={value}
-                    size='small'
-                    type={'select'}
-                    onBlur={onBlur}
-                    color='warning'
-                    onChange={onChange}
-                    variant='outlined'
-                    error={Boolean(errors.barrio)}
-                  >
-                    {barrios.length > 0 ? (
-                      barrios?.map(barrio => (
-                        <MenuItem key={barrio.id} value={barrio.id}>
-                          {barrio.nombre}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='barrio'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      select
+                      label='Seleccione un barrio o loteo'
+                      value={value}
+                      size='small'
+                      type={'select'}
+                      onBlur={onBlur}
+                      color='warning'
+                      onChange={onChange}
+                      variant='outlined'
+                      error={Boolean(errors.barrio)}
+                    >
+                      {barrios.length > 0 ? (
+                        barrios?.map(barrio => (
+                          <MenuItem key={barrio.id} value={barrio.id}>
+                            {barrio.nombre}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem key={'No hay metadata'} value={undefined}>
+                          No hay metadata disponible
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={'No hay metadata'} value={undefined}>
-                        No hay metadata disponible
-                      </MenuItem>
-                    )}
-                  </TextField>
+                      )}
+                    </TextField>
+                  )}
+                />
+                {errors.barrio && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.barrio.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.barrio && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.barrio.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='calle'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    select
-                    label='Seleccione una calle'
-                    value={value}
-                    size='small'
-                    type={'select'}
-                    onBlur={onBlur}
-                    color='warning'
-                    onChange={onChange}
-                    variant='outlined'
-                    error={Boolean(errors.calle)}
-                  >
-                    {calles.length > 0 ? (
-                      calles?.map(calle => (
-                        <MenuItem key={calle.id} value={calle.id}>
-                          {calle.nombre}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='calle'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      select
+                      label='Seleccione una calle'
+                      value={value}
+                      size='small'
+                      type={'select'}
+                      onBlur={onBlur}
+                      color='warning'
+                      onChange={onChange}
+                      variant='outlined'
+                      error={Boolean(errors.calle)}
+                    >
+                      {calles.length > 0 ? (
+                        calles?.map(calle => (
+                          <MenuItem key={calle.id} value={calle.id}>
+                            {calle.nombre}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem key={'No hay metadata'} value={undefined}>
+                          No hay calles disponibles
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={'No hay metadata'} value={undefined}>
-                        No hay calles disponibles
-                      </MenuItem>
-                    )}
-                  </TextField>
+                      )}
+                    </TextField>
+                  )}
+                />
+                {errors.calle && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.calle.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.calle && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.calle.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='altura'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    size='small'
-                    value={value}
-                    color='warning'
-                    label='Número de calle'
-                    onChange={onChange}
-                    error={Boolean(errors.altura)}
-                  />
-                )}
-              />
-              {errors.altura && <FormHelperText sx={{ color: 'error.main' }}>{errors.altura.message}</FormHelperText>}
-            </FormControl>
-          </Grid>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='altura'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      size='small'
+                      value={value}
+                      color='warning'
+                      label='Número de calle'
+                      onChange={onChange}
+                      error={Boolean(errors.altura)}
+                    />
+                  )}
+                />
+                {errors.altura && <FormHelperText sx={{ color: 'error.main' }}>{errors.altura.message}</FormHelperText>}
+              </FormControl>
+            </Grid>
 
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='entre_calle1'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    select
-                    label='Entre calle'
-                    value={value}
-                    size='small'
-                    type={'select'}
-                    onBlur={onBlur}
-                    color='warning'
-                    onChange={onChange}
-                    variant='outlined'
-                    error={Boolean(errors.entre_calle1)}
-                  >
-                    {calles.length > 0 ? (
-                      calles?.map(calle => (
-                        <MenuItem key={calle.id} value={calle.id}>
-                          {calle.nombre}
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='entre_calle1'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      select
+                      label='Entre calle'
+                      value={value}
+                      size='small'
+                      type={'select'}
+                      onBlur={onBlur}
+                      color='warning'
+                      onChange={onChange}
+                      variant='outlined'
+                      error={Boolean(errors.entre_calle1)}
+                    >
+                      {calles.length > 0 ? (
+                        calles?.map(calle => (
+                          <MenuItem key={calle.id} value={calle.id}>
+                            {calle.nombre}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem key={'No hay metadata'} value={undefined}>
+                          No hay calles disponibles
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={'No hay metadata'} value={undefined}>
-                        No hay calles disponibles
-                      </MenuItem>
-                    )}
-                  </TextField>
+                      )}
+                    </TextField>
+                  )}
+                />
+                {errors.entre_calle1 && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.entre_calle1.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.entre_calle1 && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.entre_calle1.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='entre_calle2'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    select
-                    label='Entre calle'
-                    value={value}
-                    size='small'
-                    type={'select'}
-                    onBlur={onBlur}
-                    color='warning'
-                    onChange={onChange}
-                    variant='outlined'
-                    error={Boolean(errors.entre_calle2)}
-                  >
-                    {calles.length > 0 ? (
-                      calles?.map(calle => (
-                        <MenuItem key={calle.id} value={calle.id}>
-                          {calle.nombre}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='entre_calle2'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      select
+                      label='Entre calle'
+                      value={value}
+                      size='small'
+                      type={'select'}
+                      onBlur={onBlur}
+                      color='warning'
+                      onChange={onChange}
+                      variant='outlined'
+                      error={Boolean(errors.entre_calle2)}
+                    >
+                      {calles.length > 0 ? (
+                        calles?.map(calle => (
+                          <MenuItem key={calle.id} value={calle.id}>
+                            {calle.nombre}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem key={'No hay metadata'} value={undefined}>
+                          No hay calles disponibles
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={'No hay metadata'} value={undefined}>
-                        No hay calles disponibles
-                      </MenuItem>
-                    )}
-                  </TextField>
+                      )}
+                    </TextField>
+                  )}
+                />
+                {errors.entre_calle1 && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.entre_calle1.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.entre_calle1 && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.entre_calle1.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item md={6}>
-            <FormControl fullWidth>
-              <Controller
-                name='calle_interseccion'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextField
-                    select
-                    label='Intersección con calle'
-                    value={value}
-                    size='small'
-                    type={'select'}
-                    onBlur={onBlur}
-                    color='warning'
-                    onChange={onChange}
-                    variant='outlined'
-                    error={Boolean(errors.calle_interseccion)}
-                  >
-                    {calles.length > 0 ? (
-                      calles?.map(calle => (
-                        <MenuItem key={calle.id} value={calle.id}>
-                          {calle.nombre}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <Controller
+                  name='calle_interseccion'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      select
+                      label='Intersección con calle'
+                      value={value}
+                      size='small'
+                      type={'select'}
+                      onBlur={onBlur}
+                      color='warning'
+                      onChange={onChange}
+                      variant='outlined'
+                      error={Boolean(errors.calle_interseccion)}
+                    >
+                      {calles.length > 0 ? (
+                        calles?.map(calle => (
+                          <MenuItem key={calle.id} value={calle.id}>
+                            {calle.nombre}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem key={'No hay metadata'} value={undefined}>
+                          No hay calles disponibles
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={'No hay metadata'} value={undefined}>
-                        No hay calles disponibles
-                      </MenuItem>
-                    )}
-                  </TextField>
+                      )}
+                    </TextField>
+                  )}
+                />
+                {errors.calle_interseccion && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.calle_interseccion.message}
+                  </FormHelperText>
                 )}
-              />
-              {errors.calle_interseccion && (
-                <FormHelperText sx={{ color: 'error.main' }} id=''>
-                  {errors.calle_interseccion.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item md={12}>
-            <FormControl fullWidth>
-              <Controller
-                name='descripcion'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    size='small'
-                    multiline
-                    value={value}
-                    color='warning'
-                    minRows={5}
-                    placeholder='Escribe un detalle..'
-                    label='Descripción'
-                    onChange={onChange}
-                    error={Boolean(errors.descripcion)}
-                  />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <FormControl fullWidth>
+                <Controller
+                  name='descripcion'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      size='small'
+                      multiline
+                      value={value}
+                      color='warning'
+                      minRows={5}
+                      placeholder='Escribe un detalle..'
+                      label='Descripción'
+                      onChange={onChange}
+                      error={Boolean(errors.descripcion)}
+                    />
+                  )}
+                />
+                {errors.descripcion && (
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.descripcion.message}</FormHelperText>
                 )}
-              />
-              {errors.descripcion && (
-                <FormHelperText sx={{ color: 'error.main' }}>{errors.descripcion.message}</FormHelperText>
-              )}
-            </FormControl>
+              </FormControl>
+            </Grid>
           </Grid>
-        </Grid>
-
+        </BoxScroll>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', mt: 8 }}>
-          <Button size='small' variant='outlined' color='secondary'>
+          <Button size='small' variant='outlined' color='secondary' onClick={() => handleBack()}>
             Atrás
           </Button>
 
