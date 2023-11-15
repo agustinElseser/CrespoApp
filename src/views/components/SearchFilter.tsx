@@ -11,6 +11,7 @@ import { Box, Divider, MenuItem, Switch, TextField } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import MonthYearPickers from './MonthYearPickers'
 import { useFetch } from 'src/hooks/useFetch'
+import { useAuth } from 'src/hooks/useAuth'
 
 export interface IQueryFilter {
   desde?: Dayjs
@@ -32,6 +33,7 @@ export interface IQueryMonthFilter {
 interface IProps {
   title?: string
   service?: string
+  filter: any
   handleFilter: (name: keyof IQueryFilter, value: IQueryFilter[keyof IQueryFilter]) => void
 }
 
@@ -60,7 +62,7 @@ const TODOS = {
   nombre: 'TODAS'
 }
 
-export default function SearchFilter({ service, title, handleFilter }: IProps) {
+export default function SearchFilter({ filter, service, title, handleFilter }: IProps) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [query, setQuery] = useState<IQueryFilter>(initialState)
@@ -72,6 +74,7 @@ export default function SearchFilter({ service, title, handleFilter }: IProps) {
   const router = useRouter()
   const filterFact = router.asPath.includes('facturacion')
   const { fetch, data } = useFetch()
+  const { user } = useAuth()
 
   // ** Functions
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -106,7 +109,7 @@ export default function SearchFilter({ service, title, handleFilter }: IProps) {
     <>
       <Button
         sx={{ minWidth: '3rem', p: 0, height: '2.5rem' }}
-        variant='outlined'
+        variant={user?.rol !== 'CONTRIBUYENTE' ? 'contained' : 'outlined'}
         aria-controls='simple-menu'
         aria-haspopup='true'
         color='info'
@@ -124,22 +127,30 @@ export default function SearchFilter({ service, title, handleFilter }: IProps) {
             placeholder={'Buscar..'}
             onChange={e => handleQuery('value', e.target.value)}
           />
-
-          {filterFact && (
-            <>
-              <Switch checked={switchState.switch1} onChange={() => handleSwitchChange()} size='small' />
-              <MonthYearPickers query={query} handleQuery={handleQuery} disabled={switchState.switch2} />
-              <Divider sx={{ mt: 1, mb: '0px!important' }} />
-              <Switch checked={switchState.switch2} onChange={() => handleSwitchChange()} size='small' />
-            </>
-          )}
-
           <DatePickers filter={query} handleFilter={handleQuery} disabled={switchState.switch1} />
+          {user?.rol === 'JEFE' && (
+            <Button
+              color='error'
+              variant='outlined'
+              sx={{ height: 40, padding: 2, gap: 2 }}
+              onClick={() => handleFilter('inactivos', !filter.inactivos)}
+            >
+              Incluir inactivos
+              <Switch
+                defaultChecked={filter.inactivos}
+                checked={filter.inactivos}
+                size='small'
+                onChange={() => handleFilter('inactivos', !filter.inactivos)}
+                name='inactivos'
+                color='error'
+              />
+            </Button>
+          )}
           <Button
             color='info'
             onClick={handleFind}
             startIcon={<Icon icon='mdi:file-search' fontSize={22} />}
-            variant='outlined'
+            variant={user?.rol !== 'CONTRIBUYENTE' ? 'contained' : 'outlined'}
           >
             Buscar
           </Button>

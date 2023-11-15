@@ -165,3 +165,7 @@ export default function UserList() {
     </>
   )
 }
+UserList.acl = {
+  action: 'manage',
+  subject: 'super-admin'
+}

@@ -2,16 +2,12 @@ import { useState, useEffect, useMemo } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
-import Typography from '@mui/material/Typography'
-import { Dialog, useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
 
 import { useFetch } from 'src/hooks/useFetch'
 import { dataToExcel } from 'src/views/utils/dataToExcel'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
-import { applyFilter } from 'src/views/utils/applyFilter'
 import TableHeaders from 'src/views/components/TableHeaders'
-import { CumstomDialog } from 'src/views/components/CustomDialog'
-import SendReport from 'src/views/components/SendReport'
 import { tableClaimsAdmin } from 'src/views/reclamos/tables/tableClaimAdmin'
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -32,6 +28,7 @@ export default function AudioList() {
   //** Hooks
   const { fetch, data, loading } = useFetch()
   const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   // ** Functions
   const handleClose = () => setOpen(false)
@@ -53,7 +50,7 @@ export default function AudioList() {
   }
 
   const getAudios = () => {
-    fetch('usuario-reclamo')
+    fetch('reclamos')
   }
 
   useEffect(() => {
@@ -66,14 +63,14 @@ export default function AudioList() {
         <Grid item xs={12}>
           <Card>
             <TableHeaders
-              buttons={[6, 1, 2, 4, 7, 5]}
+              buttons={isSmallScreen ? [2, 3] : [6, 1, 2, 4, 7, 5]}
               handleFilter={handleFilter}
               toggle={toggleModal}
               handleDowload={handleDowload}
               filter={filter}
             />
             <DataGrid
-              rows={data.data ?? []}
+              rows={data?.data ?? []}
               columns={tableClaimsAdmin}
               autoHeight
               disableColumnMenu

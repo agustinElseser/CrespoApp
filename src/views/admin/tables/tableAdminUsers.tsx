@@ -1,5 +1,5 @@
 import { Box } from '@mui/system'
-import { Switch, Typography } from '@mui/material'
+import { Switch, Tooltip, Typography } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useFetch } from 'src/hooks/useFetch'
@@ -79,15 +79,21 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton color='info'>
-          <Icon icon='mdi:file-eye' fontSize={26} />
-        </IconButton>
-        <IconButton color='info' onClick={() => handleOpenDialog('edit')}>
-          <Icon icon='mdi:file-document-edit' fontSize={26} />
-        </IconButton>
-        <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
-          <Icon icon='mdi:delete-alert' fontSize={26} />
-        </IconButton>
+        <Tooltip title='Ver detalle'>
+          <IconButton color='info'>
+            <Icon icon='mdi:file-eye' fontSize={26} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='Editar'>
+          <IconButton color='info' onClick={() => handleOpenDialog('edit')}>
+            <Icon icon='mdi:file-document-edit' fontSize={26} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='Eliminar'>
+          <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
+            <Icon icon='mdi:delete-alert' fontSize={26} />
+          </IconButton>
+        </Tooltip>
       </Box>
       {openDialog && type === 'edit' && (
         <CreateForm
@@ -234,7 +240,9 @@ export const TableAdminUsers = (handleItem, item, url) => {
       headerName: 'Activo',
       renderCell: ({ row }: CellType) => {
         return (
-          <Switch size='small' color='info' checked={row.activo} onClick={() => handleActive(row.id, row.activo)} />
+          <Tooltip title='Cambiar estado'>
+            <Switch size='small' color='info' checked={row.activo} onClick={() => handleActive(row.id, row.activo)} />
+          </Tooltip>
         )
       }
     },

@@ -88,7 +88,7 @@ const navigation = (): VerticalNavItemsType => {
       title: 'USUARIOS',
       icon: 'mdi:account-supervisor',
       path: '/administracion/usuarios',
-      subject: 'admin'
+      subject: 'super-admin'
     }
   ]
 }

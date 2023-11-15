@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
 import { Box } from '@mui/system'
-import { Switch, Typography } from '@mui/material'
+import { Button, Menu, Switch, Typography } from '@mui/material'
 import CustomChip from 'src/@core/components/mui/chip'
 import IconButton from '@mui/material/IconButton'
 import { useState, MouseEvent } from 'react'
@@ -14,6 +14,74 @@ interface CellType {
 interface IRowOptions {
   row: any
   keyOfActivate: string
+}
+
+const RowOptionsMenu = ({ keyOfActivate, row }: IRowOptions) => {
+  // ** Hooks
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  // ** States
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
+  const [type, setType] = useState<string>('')
+  const rowOptionsOpen = Boolean(anchorEl)
+
+  // ** Functions
+
+  const handleRowOptionsClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleRowOptionsClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+    handleRowOptionsClose()
+  }
+  const handleOpenDialog = (type: string) => {
+    setType(type)
+    setOpenDialog(true)
+  }
+
+  const handleClick = () => {
+    console.log()
+  }
+
+  return (
+    <>
+      <IconButton
+        sx={{ minWidth: '3rem', p: 0, height: '2.5rem' }}
+        aria-controls='simple-menu'
+        aria-haspopup='true'
+        color='secondary'
+        onClick={handleRowOptionsClick}
+      >
+        <Icon icon='mdi:dots-horizontal-circle' fontSize={22} />
+      </IconButton>
+      <Menu keepMounted id='simple-menu' anchorEl={anchorEl} onClose={handleRowOptionsClose} open={Boolean(anchorEl)}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton color='info' onClick={() => handleOpenDialog('view-detail')}>
+            <Icon icon='mdi:file-eye' fontSize={26} />
+          </IconButton>
+          <IconButton color='error'>
+            <Icon icon='mdi:delete-alert' fontSize={26} />
+          </IconButton>
+        </Box>
+      </Menu>
+      <ViewDetail
+        handleCloseDialog={handleCloseDialog}
+        keyOfActivate={keyOfActivate}
+        row={row}
+        data={row}
+        open={openDialog}
+        type={type}
+        ignore={['_id', 'status', 'id', 'image']}
+        title={'Detalle'}
+        url='reclamos/mis-reclamos'
+      />
+    </>
+  )
 }
 
 const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
@@ -58,6 +126,7 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
           <Icon icon='mdi:delete-alert' fontSize={26} />
         </IconButton>
       </Box>
+
       <ViewDetail
         handleCloseDialog={handleCloseDialog}
         keyOfActivate={keyOfActivate}
@@ -67,11 +136,11 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
         type={type}
         ignore={['_id', 'status', 'id', 'image']}
         title={'Detalle'}
+        url='reclamos/mis-reclamos'
       />
     </>
   )
 }
-
 interface ColumnItem {
   minWidth?: number
   maxWidth?: number
@@ -189,5 +258,80 @@ export const tableClaims: any = [
     field: 'actions',
     headerName: 'ACCIONES',
     renderCell: ({ row }: CellType) => <RowOptions keyOfActivate={'enabled'} row={row} />
+  }
+]
+
+export const tableClaimsResponsive: any = [
+  {
+    flex: 1,
+    field: 'tipo_reclamo',
+    headerName: 'TIPO',
+    sortable: false,
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.tipo_reclamo.nombre}
+        </Typography>
+      )
+    }
+  },
+
+  {
+    flex: 0.5,
+    field: 'fecha_editado',
+    sortable: false,
+    headerName: 'FECHA',
+    renderCell: ({ row }: CellType) => {
+      const date = new Date(row.date)
+      const dateFormat = date.toLocaleString('es-ES', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      })
+
+      return (
+        <Typography noWrap variant='body2'>
+          {row.fecha_editado}
+        </Typography>
+      )
+    }
+  },
+  {
+    width: 90,
+    sortable: false,
+    align: 'center',
+    headerAlign: 'center',
+    field: 'status',
+    headerName: 'ESTADO',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <>
+          <IconButton
+            color={
+              row.estado.toLowerCase() === 'enviado'
+                ? 'warning'
+                : row.estado.toLowerCase() === 'iniciado'
+                ? 'info'
+                : row.estado.toLowerCase() === 'resuelto'
+                ? 'success'
+                : 'error'
+            }
+          >
+            {row.estado.toLowerCase() === 'enviado' ? (
+              <Icon icon='mdi:help-box-outline' fontSize={25} />
+            ) : row.estado.toLowerCase() === 'iniciado' ? (
+              <Icon icon='mdi:alert-box-outline' fontSize={25} />
+            ) : row.estado.toLowerCase() === 'resuelto' ? (
+              <Icon icon='mdi:checkbox-marked-outline' fontSize={25} />
+            ) : (
+              <Icon icon='mdi:close-box-outline' fontSize={25} />
+            )}
+          </IconButton>
+          <RowOptionsMenu keyOfActivate={'enabled'} row={row} />
+        </>
+      )
+    }
   }
 ]

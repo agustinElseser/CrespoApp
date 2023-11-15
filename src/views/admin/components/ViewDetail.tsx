@@ -20,15 +20,16 @@ interface IProps {
   type: string
   ignore: string[]
   title: string
+  url: string
 }
 
-export default function ViewDetail({ handleCloseDialog, row, open, type, data, ignore, title }: IProps) {
+export default function ViewDetail({ handleCloseDialog, row, open, type, data, ignore, title, url }: IProps) {
   const theme = useTheme()
   const { fetch, data: dataDetail } = useFetch()
 
   useEffect(() => {
     if (open && type === 'view-detail') {
-      fetch(`complaints/getcomplaintdetail/${row._id}`)
+      fetch(`${url}/${row.id}`)
     }
   }, [open && type === 'view-detail'])
 
@@ -75,8 +76,8 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
               <Typography variant='body2' sx={{ fontWeight: 600 }}>
                 Información general
               </Typography>
-              {dataDetail?.findedComplaints &&
-                Object.entries(dataDetail.findedComplaints).map(([key, value]: any) => {
+              {dataDetail?.data &&
+                Object.entries(dataDetail.data).map(([key, value]: any) => {
                   if (!ignore.includes(key)) {
                     return (
                       <Box key={key} sx={{ display: 'flex' }}>

@@ -95,7 +95,7 @@ export default function ClaimsTypeList() {
         <Grid item xs={12}>
           <Card>
             <TableHeaders
-              buttonsTitle={['tipo de reclamo']}
+              buttonsTitle={['tipo reclamo']}
               buttons={[2, 6, 1, 4, 7, 5]}
               handleFilter={handleFilter}
               toggle={toggleModal}
@@ -131,9 +131,9 @@ export default function ClaimsTypeList() {
           </Card>
         </Grid>
       </Grid>
-      {open && type === 'tipo de reclamo' && (
+      {open && type === 'tipo reclamo' && (
         <CreateForm
-          open={open && type === 'tipo de reclamo'}
+          open={open && type === 'tipo reclamo'}
           type='AGREGAR'
           title='tipo de reclamo'
           handleCloseDialog={handleClose}

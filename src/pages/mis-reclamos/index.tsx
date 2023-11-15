@@ -11,7 +11,7 @@ import { CumstomDialog } from 'src/views/components/CustomDialog'
 import StepperCreateClaim from 'src/views/reclamos/components/createClaim/StepperCreateClaim'
 import dayjs from 'dayjs'
 import { SpeechProvider } from 'src/views/reclamos/components/createClaim/context/ClaimContext'
-import { tableClaims } from 'src/views/reclamos/tables/tableClaims'
+import { tableClaims, tableClaimsResponsive } from 'src/views/reclamos/tables/tableClaims'
 
 const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
@@ -53,7 +53,7 @@ export default function MyClaimsList() {
   }
 
   const getData = () => {
-    fetch('usuario-reclamo')
+    fetch('reclamos/mis-reclamos')
   }
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function MyClaimsList() {
             />
             <DataGrid
               rows={data.data ?? []}
-              columns={tableClaims}
+              columns={isSmallScreen ? tableClaimsResponsive : tableClaims}
               autoHeight
               disableColumnMenu
               disableColumnFilter

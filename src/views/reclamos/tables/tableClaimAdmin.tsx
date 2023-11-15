@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
 import { Box } from '@mui/system'
-import { Switch, Typography } from '@mui/material'
+import { Switch, Tooltip, Typography } from '@mui/material'
 import * as yup from 'yup'
 import IconButton from '@mui/material/IconButton'
 import { useState, MouseEvent } from 'react'
@@ -66,15 +66,22 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton color='warning' onClick={() => handleOpenDialog('view-detail')}>
-          <Icon icon='mdi:file-eye' fontSize={26} />
-        </IconButton>
-        <IconButton color='success' onClick={() => handleOpenDialog('follow')}>
-          <Icon icon='mdi:file-move' fontSize={26} />
-        </IconButton>
-        <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
-          <Icon icon='mdi:delete-alert' fontSize={26} />
-        </IconButton>
+        <Tooltip title='Ver detalle'>
+          <IconButton color='info' onClick={() => handleOpenDialog('view-detail')}>
+            <Icon icon='mdi:file-eye' fontSize={26} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='Dar seguimiento'>
+          <IconButton color='info' onClick={() => handleOpenDialog('follow')}>
+            {/* <Icon icon='mdi:clipboard-edit' fontSize={26} /> */}
+            <Icon icon='mdi:receipt-text-edit' fontSize={26} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='Eliminar'>
+          <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
+            <Icon icon='mdi:delete-alert' fontSize={26} />
+          </IconButton>
+        </Tooltip>
       </Box>
       <ViewDetail
         handleCloseDialog={handleCloseDialog}
@@ -85,6 +92,7 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
         type={type}
         ignore={['id', 'status']}
         title={'Detalle'}
+        url='reclamos'
       />
       <CreateForm
         open={openDialog && type === 'follow'}
@@ -118,7 +126,7 @@ interface ColumnItem {
 
 export const tableClaimsAdmin: any = [
   {
-    width: 90,
+    width: 120,
     field: 'id',
     sortable: false,
     headerName: 'Nº',
@@ -149,7 +157,7 @@ export const tableClaimsAdmin: any = [
 
       return (
         <Typography noWrap variant='body2'>
-          {row.date}
+          {row.fecha_creado}
         </Typography>
       )
     }
@@ -163,7 +171,7 @@ export const tableClaimsAdmin: any = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.calle}
+          {row.calle.nombre} {row.altura}
         </Typography>
       )
     }
@@ -177,7 +185,7 @@ export const tableClaimsAdmin: any = [
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.entre}
+          {row.entre_calle1.nombre} y {row.entre_calle2.nombre}
         </Typography>
       )
     }
@@ -185,13 +193,13 @@ export const tableClaimsAdmin: any = [
   {
     minWidth: 140,
     flex: 1,
-    field: 'type',
+    field: 'tipo_reclamo',
     headerName: 'Tipo',
     sortable: false,
     renderCell: ({ row }: CellType) => {
       return (
         <Typography noWrap variant='body2'>
-          {row.type}
+          {row.tipo_reclamo.nombre}
         </Typography>
       )
     }
@@ -213,8 +221,9 @@ export const tableClaimsAdmin: any = [
   {
     minWidth: 130,
     flex: 0.5,
-    field: 'STT',
-    align: 'status',
+    field: 'estado',
+    align: 'center',
+    headerAlign: 'center',
     sortable: false,
     headerName: 'ESTADO',
     renderCell: ({ row }: CellType) => {
@@ -222,53 +231,27 @@ export const tableClaimsAdmin: any = [
         <CustomChip
           skin='light'
           size='small'
-          label={row.status === 1 ? 'FINALIZADO' : row.status === 2 ? 'PENDIENTE' : 'RECHAZADA'}
-          color={row.status === 1 ? 'success' : row.status === 2 ? 'warning' : 'error'}
+          label={row.estado.toUpperCase()}
+          color={
+            row.estado.toLowerCase() === 'enviado'
+              ? 'warning'
+              : row.estado.toLowerCase() === 'iniciado'
+              ? 'info'
+              : row.estado.toLowerCase() === 'resuelto'
+              ? 'success'
+              : 'error'
+          }
           sx={{ textTransform: 'capitalize', border: '1px solid' }}
         />
       )
     }
   },
-  // {
-  //   minWidth: 150,
-  //   flex: 1,
-  //   field: 'dateEdit',
-  //   sortable: false,
-  //   headerName: 'FECHA MODIFICACIÓN',
-  //   renderCell: ({ row }: CellType) => {
-  //     const date = new Date(row.date)
-  //     const dateFormat = date.toLocaleString('es-ES', {
-  //       day: 'numeric',
-  //       month: 'short',
-  //       year: 'numeric',
-  //       hour: 'numeric',
-  //       minute: 'numeric'
-  //     })
 
-  //     return (
-  //       <Typography noWrap variant='body2'>
-  //         {row.date_edit}
-  //       </Typography>
-  //     )
-  //   }
-  // },
-  // {
-  //   minWidth: 130,
-  //   flex: 1,
-  //   field: 'types2',
-  //   headerName: 'Creado por',
-  //   sortable: false,
-  //   renderCell: ({ row }: CellType) => {
-  //     return (
-  //       <Typography noWrap variant='body2'>
-  //         {row.creador}
-  //       </Typography>
-  //     )
-  //   }
-  // },
   {
     minWidth: 150,
     sortable: false,
+    headerAlign: 'center',
+    align: 'center',
     field: 'actions',
     headerName: 'ACCIONES',
     renderCell: ({ row }: CellType) => <RowOptions keyOfActivate={'enabled'} row={row} />

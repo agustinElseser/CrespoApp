@@ -35,7 +35,7 @@ export interface IQuery {
 
 export default function TableHeaders(props: TableHeardersProps) {
   // ** Props
-  const { buttons, service, handleFilter, toggle, handleDowload } = props
+  const { buttons, service, filter, handleFilter, toggle, handleDowload } = props
   const { user } = useAuth()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -80,9 +80,12 @@ export default function TableHeaders(props: TableHeardersProps) {
     },
     {
       id: 3,
-      input: <SearchFilter key={3} title={props.search} handleFilter={handleFilter} service={service} />
+      input: <SearchFilter key={3} title={props.search} handleFilter={handleFilter} filter={filter} service={service} />
     },
-
+    {
+      id: 13,
+      input: <SearchFilter key={3} title={props.search} handleFilter={handleFilter} filter={filter} service={service} />
+    },
     {
       id: 4,
       input: <DatePickers filter={props.filter} handleFilter={handleFilter} />
