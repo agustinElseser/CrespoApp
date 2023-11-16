@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
-import { useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
 import { useFetch } from 'src/hooks/useFetch'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
 import TableHeaders from 'src/views/components/TableHeaders'
@@ -11,7 +11,7 @@ import { TableCreate } from 'src/views/admin/tables/tableCreate'
 import CreateForm, { IFormItem } from 'src/views/admin/components/CreateForm'
 import { useAuth } from 'src/hooks/useAuth'
 import * as yup from 'yup'
-import { TableAdminUsers } from 'src/views/admin/tables/tableAdminUsers'
+import { TableAdminUsers, TableAdminUsersResponsive } from 'src/views/admin/tables/tableAdminUsers'
 
 const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
@@ -61,6 +61,10 @@ export default function UserList() {
   const getData = url => fetch(url)
 
   useEffect(() => {
+    getAreas('area')
+  }, [open])
+
+  useEffect(() => {
     if (filter.inactivos) {
       getData('admin/todos')
     } else {
@@ -102,15 +106,10 @@ export default function UserList() {
     }
   ]
 
-  const tableConfig: any = TableAdminUsers(handleItem, 'usuario', 'admin')
-
-  useEffect(() => {
-    if (filter.inactivos) {
-      getData('admin/todos')
-    } else {
-      getData('admin')
-    }
-  }, [open])
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const tableConfig = isSmallScreen
+    ? TableAdminUsersResponsive(handleItem, 'usuario', 'admin')
+    : TableAdminUsers(handleItem, 'usuario', 'admin')
 
   return (
     <>
@@ -119,7 +118,7 @@ export default function UserList() {
           <Card>
             <TableHeaders
               buttonsTitle={['usuario']}
-              buttons={[2, 6, 1, 4, 7, 5]}
+              buttons={isSmallScreen ? [2, 3] : [2, 6, 1, 4, 7, 5]}
               handleFilter={handleFilter}
               toggle={toggleModal}
               filter={filter}

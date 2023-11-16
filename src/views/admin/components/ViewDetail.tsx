@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import { Box, Divider, Theme, createStyles } from '@mui/material'
+import { Box, Divider, Theme, createStyles, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useAuth } from 'src/hooks/useAuth'
 import { useFetch } from 'src/hooks/useFetch'
@@ -12,7 +12,7 @@ import { Icon } from '@iconify/react'
 import { BoxScroll } from 'src/views/components/BoxScroll'
 import CustomChip from 'src/@core/components/mui/chip'
 import { DataGrid } from '@mui/x-data-grid'
-import { tableTracking } from 'src/views/reclamos/tables/tableTracking'
+import { tableTracking, tableTrackingResponsive } from 'src/views/reclamos/tables/tableTracking'
 
 interface IProps {
   handleCloseDialog: () => void
@@ -36,7 +36,8 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
     }
   }, [open && type === 'view-detail'])
 
-  console.log('dataDetail', dataDetail?.data?.Seguimiento)
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
   if (open && type === 'view-detail') {
     return (
       <Dialog maxWidth={'xl'} onClose={handleCloseDialog} open={open && type === 'view-detail'}>
@@ -63,7 +64,7 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ mt: 3, p: 5, minWidth: 500 }}>
+        <DialogContent sx={{ mt: 3, p: 5, minWidth: 300 }}>
           <BoxScroll
             className='containScroll'
             sx={{
@@ -114,7 +115,8 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
 
                   <DataGrid
                     rows={dataDetail?.data?.Seguimiento ?? []}
-                    columns={tableTracking}
+                    columns={isSmallScreen ? tableTrackingResponsive : tableTracking}
+                    rowHeight={75}
                     autoHeight
                     disableColumnMenu
                     disableColumnFilter

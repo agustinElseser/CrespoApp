@@ -9,6 +9,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import ViewDetail from '../../admin/components/ViewDetail'
 import CreateForm, { IFormItem } from '../../admin/components/CreateForm'
 import DeleteForm from '../../admin/components/DeleteForm'
+import dayjs, { Dayjs } from 'dayjs'
 
 interface CellType {
   row: any
@@ -102,7 +103,7 @@ const RowOptions = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         open={openDialog}
         type={type}
         ignore={['id', 'status', 'Seguimiento']}
-        title={'Detalle'}
+        title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
         url='reclamos'
       />
       <CreateForm
@@ -176,7 +177,7 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         sx={{ minWidth: '3rem', p: 0, height: '2.5rem' }}
         aria-controls='simple-menu'
         aria-haspopup='true'
-        color='secondary'
+        color='info'
         onClick={handleRowOptionsClick}
       >
         <Icon icon='mdi:dots-horizontal-circle' fontSize={22} />
@@ -189,7 +190,11 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
             </IconButton>
           </Tooltip>
           <Tooltip title='Dar seguimiento'>
-            <IconButton color='info' onClick={() => handleOpenDialog('follow')}>
+            <IconButton
+              color='info'
+              onClick={() => handleOpenDialog('follow')}
+              disabled={row.estado === 'RESUELTO' || row.estado === 'RECHAZADO'}
+            >
               {/* <Icon icon='mdi:clipboard-edit' fontSize={26} /> */}
               <Icon icon='mdi:receipt-text-edit' fontSize={26} />
             </IconButton>
@@ -210,7 +215,7 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         open={openDialog}
         type={type}
         ignore={['id', 'status', 'Seguimiento']}
-        title={'Detalle'}
+        title={`Detalle reclamo`}
         url='reclamos'
       />
       <CreateForm
@@ -265,18 +270,11 @@ export const tableClaimsAdmin: any = handleItem => {
       sortable: false,
       headerName: 'FECHA ALTA',
       renderCell: ({ row }: CellType) => {
-        const date = new Date(row.date)
-        const dateFormat = date.toLocaleString('es-ES', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric'
-        })
+        const fecha = dayjs(row.fecha_editado)
 
         return (
           <Typography noWrap variant='body2'>
-            {row.fecha_creado}
+            {fecha.format('DD/MM/YY - HH:mm')}
           </Typography>
         )
       }
@@ -367,19 +365,6 @@ export const tableClaimsAdmin: any = handleItem => {
 export const tableClaimsAdminResponsive: any = handleItem => {
   return [
     {
-      width: 120,
-      field: 'id',
-      sortable: false,
-      headerName: 'Nº',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.id}
-          </Typography>
-        )
-      }
-    },
-    {
       flex: 1,
       field: 'tipo_reclamo',
       headerName: 'TIPO',
@@ -393,10 +378,12 @@ export const tableClaimsAdminResponsive: any = handleItem => {
       }
     },
     {
-      flex: 0.5,
+      width: 70,
       field: 'fecha_editado',
       sortable: false,
       headerName: 'FECHA',
+      align: 'center',
+      headerAlign: 'center',
       renderCell: ({ row }: CellType) => {
         const date = new Date(row.date)
         const dateFormat = date.toLocaleString('es-ES', {
@@ -409,18 +396,18 @@ export const tableClaimsAdminResponsive: any = handleItem => {
 
         return (
           <Typography noWrap variant='body2'>
-            {row.fecha_editado}
+            {dayjs(row.fecha_creado).format('DD/MM')}
           </Typography>
         )
       }
     },
     {
-      width: 90,
+      width: 70,
       sortable: false,
       align: 'center',
       headerAlign: 'center',
       field: 'status',
-      headerName: 'ESTADO',
+      headerName: 'EST',
       renderCell: ({ row }: CellType) => {
         return (
           <>
@@ -445,10 +432,19 @@ export const tableClaimsAdminResponsive: any = handleItem => {
                 <Icon icon='mdi:close-box-outline' fontSize={27} />
               )}
             </IconButton>
-            <RowOptionsMenu keyOfActivate={'enabled'} row={row} handleItem={handleItem} />
           </>
         )
       }
+    },
+
+    {
+      width: 70,
+      sortable: false,
+      field: 'actions',
+      align: 'center',
+      headerAlign: 'center',
+      headerName: 'ACC',
+      renderCell: ({ row }: CellType) => <RowOptionsMenu keyOfActivate={'enabled'} row={row} handleItem={handleItem} />
     }
   ]
 }

@@ -128,7 +128,7 @@ export default function SearchFilter({ filter, service, title, handleFilter }: I
             onChange={e => handleQuery('value', e.target.value)}
           />
           <DatePickers filter={query} handleFilter={handleQuery} disabled={switchState.switch1} />
-          {user?.rol === 'JEFE' && (
+          {user?.rol === 'JEFE' && router.asPath !== '/reclamos/' && (
             <Button
               color='error'
               variant='outlined'

@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import { useState, MouseEvent } from 'react'
 import { Icon } from '@iconify/react'
 import ViewDetail from 'src/views/admin/components/ViewDetail'
+import dayjs from 'dayjs'
 
 interface CellType {
   row: any
@@ -64,7 +65,7 @@ const RowOptionsMenu = ({ keyOfActivate, row }: IRowOptions) => {
           <IconButton color='info' onClick={() => handleOpenDialog('view-detail')}>
             <Icon icon='mdi:file-eye' fontSize={26} />
           </IconButton>
-          <IconButton color='error'>
+          <IconButton color='error' disabled={row.estado !== 'ENVIADO'}>
             <Icon icon='mdi:delete-alert' fontSize={26} />
           </IconButton>
         </Box>
@@ -76,8 +77,8 @@ const RowOptionsMenu = ({ keyOfActivate, row }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['_id', 'status', 'id', 'image']}
-        title={'Detalle'}
+        ignore={['_id', 'status', 'id', 'image', 'Seguimiento']}
+        title={`Detalle reclamo`}
         url='reclamos/mis-reclamos'
       />
     </>
@@ -122,7 +123,7 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
         <IconButton color='info' onClick={() => handleOpenDialog('view-detail')}>
           <Icon icon='mdi:file-eye' fontSize={26} />
         </IconButton>
-        <IconButton color='error'>
+        <IconButton color='error' disabled={row.estado !== 'ENVIADO'}>
           <Icon icon='mdi:delete-alert' fontSize={26} />
         </IconButton>
       </Box>
@@ -134,8 +135,8 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['_id', 'status', 'id', 'image']}
-        title={'Detalle'}
+        ignore={['_id', 'status', 'id', 'image', 'Seguimiento']}
+        title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
         url='reclamos/mis-reclamos'
       />
     </>
@@ -186,18 +187,11 @@ export const tableClaims: any = [
     sortable: false,
     headerName: 'FECHA ALTA',
     renderCell: ({ row }: CellType) => {
-      const date = new Date(row.date)
-      const dateFormat = date.toLocaleString('es-ES', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      })
+      const fecha = dayjs(row.fecha_editado)
 
       return (
         <Typography noWrap variant='body2'>
-          {row.fecha_creado}
+          {fecha.format('DD/MM/YY - HH:mm')}
         </Typography>
       )
     }
@@ -282,20 +276,15 @@ export const tableClaimsResponsive: any = [
     flex: 0.5,
     field: 'fecha_editado',
     sortable: false,
+    align: 'center',
+    headerAlign: 'center',
     headerName: 'FECHA',
     renderCell: ({ row }: CellType) => {
-      const date = new Date(row.date)
-      const dateFormat = date.toLocaleString('es-ES', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      })
+      const fecha = dayjs(row.fecha_editado)
 
       return (
         <Typography noWrap variant='body2'>
-          {row.fecha_editado}
+          {fecha.format('DD/MM')}
         </Typography>
       )
     }

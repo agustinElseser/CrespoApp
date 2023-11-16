@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
-import { useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
 import { useFetch } from 'src/hooks/useFetch'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
 import TableHeaders from 'src/views/components/TableHeaders'
 import dayjs from 'dayjs'
-import { TableCreate } from 'src/views/admin/tables/tableCreate'
+import { TableCreate, TableCreateResponsive } from 'src/views/admin/tables/tableCreate'
 import CreateForm, { IFormItem } from 'src/views/admin/components/CreateForm'
 import { useAuth } from 'src/hooks/useAuth'
 
@@ -73,7 +73,10 @@ export default function NeighborhoodList() {
     }
   ]
 
-  const tableConfig = TableCreate(handleItem, 'barrio', 'barrio', user?.rol)
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const tableConfig = isSmallScreen
+    ? TableCreateResponsive(handleItem, 'barrio', 'barrio', user?.rol)
+    : TableCreate(handleItem, 'barrio', 'barrio', user?.rol)
 
   return (
     <>
@@ -82,7 +85,7 @@ export default function NeighborhoodList() {
           <Card>
             <TableHeaders
               buttonsTitle={['barrio']}
-              buttons={[2, 6, 1, 4, 7, 5]}
+              buttons={isSmallScreen ? [2, 3] : [2, 6, 1, 4, 7, 5]}
               handleFilter={handleFilter}
               toggle={toggleModal}
               filter={filter}

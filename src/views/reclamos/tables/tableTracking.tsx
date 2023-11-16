@@ -9,6 +9,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import ViewDetail from '../../admin/components/ViewDetail'
 import CreateForm, { IFormItem } from '../../admin/components/CreateForm'
 import DeleteForm from '../../admin/components/DeleteForm'
+import dayjs from 'dayjs'
 
 interface CellType {
   row: any
@@ -272,9 +273,11 @@ export const tableTracking: any = [
     sortable: false,
     headerName: 'FECHA',
     renderCell: ({ row }: CellType) => {
+      const fecha = dayjs(row.fecha_editado)
+
       return (
         <Typography noWrap variant='body2'>
-          {row.fecha_creado}
+          {fecha.format('DD/MM/YY - HH:mm')}
         </Typography>
       )
     }
@@ -316,91 +319,49 @@ export const tableTracking: any = [
   }
 ]
 
-export const tableClaimsAdminResponsive: any = handleItem => {
-  return [
-    {
-      width: 120,
-      field: 'id',
-      sortable: false,
-      headerName: 'Nº',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.id}
-          </Typography>
-        )
-      }
-    },
-    {
-      flex: 1,
-      field: 'tipo_reclamo',
-      headerName: 'TIPO',
-      sortable: false,
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.tipo_reclamo.nombre}
-          </Typography>
-        )
-      }
-    },
-    {
-      flex: 0.5,
-      field: 'fecha_editado',
-      sortable: false,
-      headerName: 'FECHA',
-      renderCell: ({ row }: CellType) => {
-        const date = new Date(row.date)
-        const dateFormat = date.toLocaleString('es-ES', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric'
-        })
+export const tableTrackingResponsive: any = [
+  {
+    flex: 1,
 
-        return (
-          <Typography noWrap variant='body2'>
-            {row.fecha_editado}
-          </Typography>
-        )
-      }
-    },
-    {
-      width: 90,
-      sortable: false,
-      align: 'center',
-      headerAlign: 'center',
-      field: 'status',
-      headerName: 'ESTADO',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <>
-            <IconButton
+    field: 'nombre',
+
+    sortable: false,
+    headerName: 'ESTADO',
+    renderCell: ({ row }: CellType) => {
+      const fecha = dayjs(row.fecha_editado)
+
+      return (
+        <Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <CustomChip
+              skin='light'
+              size='small'
+              label={row.nombre}
               color={
-                row.estado === 'ENVIADO'
+                row.nombre === 'ENVIADO'
                   ? 'info'
-                  : row.estado === 'INICIADO'
+                  : row.nombre === 'INICIADO'
                   ? 'warning'
-                  : row.estado === 'RESUELTO'
+                  : row.nombre === 'RESUELTO'
                   ? 'success'
                   : 'error'
               }
-            >
-              {row.estado === 'ENVIADO' ? (
-                <Icon icon='mdi:help-box-outline' fontSize={27} />
-              ) : row.estado === 'INICIADO' ? (
-                <Icon icon='mdi:alert-box-outline' fontSize={27} />
-              ) : row.estado === 'RESUELTO' ? (
-                <Icon icon='mdi:checkbox-marked-outline' fontSize={27} />
-              ) : (
-                <Icon icon='mdi:close-box-outline' fontSize={27} />
-              )}
-            </IconButton>
-            <RowOptionsMenu keyOfActivate={'enabled'} row={row} handleItem={handleItem} />
-          </>
-        )
-      }
+              sx={{ textTransform: 'capitalize', border: '1px solid' }}
+            />
+            <Typography noWrap variant='body2'>
+              {fecha.format('DD/MM - HH:mm')}
+            </Typography>
+            <Typography noWrap variant='body2'>
+              {row.id_usuario.username}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', mt: 3 }}>
+            <Typography noWrap variant='body2'>
+              {row.descripcion}
+            </Typography>
+          </Box>
+        </Box>
+      )
     }
-  ]
-}
+  }
+]
