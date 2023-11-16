@@ -79,16 +79,20 @@ const RowOptions = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
           </IconButton>
         </Tooltip>
         <Tooltip title='Dar seguimiento'>
-          <IconButton color='info' onClick={() => handleOpenDialog('follow')}>
+          <IconButton
+            color='info'
+            onClick={() => handleOpenDialog('follow')}
+            disabled={row.estado === 'RESUELTO' || row.estado === 'RECHAZADO'}
+          >
             {/* <Icon icon='mdi:clipboard-edit' fontSize={26} /> */}
             <Icon icon='mdi:receipt-text-edit' fontSize={26} />
           </IconButton>
         </Tooltip>
-        <Tooltip title='Eliminar'>
+        {/* <Tooltip title='Eliminar'>
           <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
             <Icon icon='mdi:delete-alert' fontSize={26} />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
       </Box>
       <ViewDetail
         handleCloseDialog={handleCloseDialog}
@@ -190,11 +194,11 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
               <Icon icon='mdi:receipt-text-edit' fontSize={26} />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Eliminar'>
+          {/* <Tooltip title='Eliminar'>
             <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
               <Icon icon='mdi:delete-alert' fontSize={26} />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       </Menu>
 

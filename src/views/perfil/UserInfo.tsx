@@ -100,13 +100,6 @@ export default function UserInfo() {
                 <Typography variant='h6' sx={{ textTransform: 'capitalize', mb: 4 }}>
                   {user?.username?.toLocaleUpperCase()}
                 </Typography>
-                <CustomChip
-                  skin='light'
-                  size='small'
-                  label={data.rol?.nombre}
-                  color='primary'
-                  sx={{ textTransform: 'capitalize' }}
-                />
               </Box>
               <Divider />
               <Typography variant='body1' fontWeight={900}>
