@@ -52,7 +52,7 @@ export default function UserList() {
 
   const handleItem = () => {
     if (filter.inactivos) {
-      getData('admin/todas')
+      getData('admin/todos')
     } else {
       getData('admin')
     }
@@ -62,7 +62,7 @@ export default function UserList() {
 
   useEffect(() => {
     if (filter.inactivos) {
-      getData('admin/todas')
+      getData('admin/todos')
     } else {
       getData('admin')
     }
@@ -105,8 +105,10 @@ export default function UserList() {
   const tableConfig: any = TableAdminUsers(handleItem, 'usuario', 'admin')
 
   useEffect(() => {
-    if (open) {
-      getAreas('area')
+    if (filter.inactivos) {
+      getData('admin/todos')
+    } else {
+      getData('admin')
     }
   }, [open])
 

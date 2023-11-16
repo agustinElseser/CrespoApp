@@ -13,21 +13,21 @@ const UserRolChecker = ({ children }) => {
   let allowedPaths: string[] = []
 
   if (user?.rol === 'CONTRIBUYENTE') {
-    allowedPaths = ['login', 'reset-password', 'mis-reclamos', 'perfil', '/']
+    allowedPaths = ['mis-reclamos', 'perfil', '/']
   } else if (user?.rol === 'JEFE') {
+    allowedPaths = ['reclamos', 'calles', 'barrios', 'areas', 'usuarios', 'tipos-de-reclamos', 'perfil']
+  } else {
     allowedPaths = [
       'login',
       'reset-password',
+      'restaurar-password',
+      'activar-cuenta',
       'reclamos',
       'calles',
       'barrios',
       'areas',
-      'usuarios',
-      'tipos-de-reclamos',
-      'perfil'
+      'tipos-de-reclamos'
     ]
-  } else {
-    allowedPaths = ['login', 'reset-password', 'reclamos', 'calles', 'barrios', 'areas', 'tipos-de-reclamos']
   }
 
   useEffect(() => {
@@ -39,7 +39,6 @@ const UserRolChecker = ({ children }) => {
       return fullPath.includes(pathWithSlash)
     })
 
-    console.log('path permitido', currentPath, allowedPaths, isPathAllowed)
     if (user) {
       if (!isPathAllowed) {
         setIsAuthorized(false)

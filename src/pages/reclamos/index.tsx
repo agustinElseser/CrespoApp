@@ -8,7 +8,7 @@ import { useFetch } from 'src/hooks/useFetch'
 import { dataToExcel } from 'src/views/utils/dataToExcel'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
 import TableHeaders from 'src/views/components/TableHeaders'
-import { tableClaimsAdmin } from 'src/views/reclamos/tables/tableClaimAdmin'
+import { tableClaimsAdmin, tableClaimsAdminResponsive } from 'src/views/reclamos/tables/tableClaimAdmin'
 import dayjs, { Dayjs } from 'dayjs'
 
 const initialFilter = {
@@ -49,13 +49,23 @@ export default function AudioList() {
     dataToExcel(type === 'all' ? data : data?.slice(currentPage * pageSize, (currentPage + 1) * pageSize))
   }
 
-  const getAudios = () => {
-    fetch('reclamos')
+  const handleItem = () => {
+    if (filter.inactivos) {
+      getData('reclamos/todas')
+    } else {
+      getData('reclamos')
+    }
   }
+  const getData = url => fetch(url)
 
   useEffect(() => {
-    getAudios()
-  }, [open, filter?.desde, filter?.hasta, pageSize, currentPage, filter?.value, filter?.filtrar])
+    if (filter.inactivos) {
+      getData('reclamos/todas')
+    } else {
+      getData('reclamos')
+    }
+    setFilter({ ...filter, filtrar: '' })
+  }, [open, filter?.desde, filter?.hasta, pageSize, currentPage, filter?.value, filter?.filtrar, filter.inactivos])
 
   return (
     <>
@@ -71,7 +81,7 @@ export default function AudioList() {
             />
             <DataGrid
               rows={data?.data ?? []}
-              columns={tableClaimsAdmin}
+              columns={isSmallScreen ? tableClaimsAdminResponsive(handleItem) : tableClaimsAdmin(handleItem)}
               autoHeight
               disableColumnMenu
               disableColumnFilter

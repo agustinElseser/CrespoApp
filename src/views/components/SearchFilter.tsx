@@ -109,7 +109,7 @@ export default function SearchFilter({ filter, service, title, handleFilter }: I
     <>
       <Button
         sx={{ minWidth: '3rem', p: 0, height: '2.5rem' }}
-        variant={user?.rol !== 'CONTRIBUYENTE' ? 'contained' : 'outlined'}
+        variant='contained'
         aria-controls='simple-menu'
         aria-haspopup='true'
         color='info'
@@ -150,7 +150,7 @@ export default function SearchFilter({ filter, service, title, handleFilter }: I
             color='info'
             onClick={handleFind}
             startIcon={<Icon icon='mdi:file-search' fontSize={22} />}
-            variant={user?.rol !== 'CONTRIBUYENTE' ? 'contained' : 'outlined'}
+            variant='contained'
           >
             Buscar
           </Button>

@@ -17,14 +17,18 @@ import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 import { Icon } from '@iconify/react'
 import { TextFieldWrapper } from './Login'
+import toast from 'react-hot-toast'
 
 interface State {
+  username: string
   password: string
   showPassword: boolean
   repeatPassword: string
-  name: string
-  username: string
-  email: string
+  nombre: string
+  apellido: string
+  dni: string
+  direccion: string
+  telefono: string
 }
 
 export default function Register({ handleForm }) {
@@ -33,77 +37,62 @@ export default function Register({ handleForm }) {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false)
   const [showfirstPassword, setShowfirstPassword] = useState(false)
   const defaultValues: State = {
+    username: '',
     password: '',
     showPassword: false,
     repeatPassword: '',
-    email: '',
-    name: '',
-    username: ''
+    nombre: '',
+    apellido: '',
+    dni: '',
+    direccion: '',
+    telefono: ''
   }
 
   const schema = yup.object().shape({
-    name: yup.string().required('*Nombre es un campo requerido.'),
-    username: yup.string().required('*Apellido es un campo requerido.'),
-    email: yup.string().required('*Email es un campo requerido.').email('*Debe ingresar un email válido.'),
+    username: yup.string().required('*Username es un campo requerido.').email('*Debe ingresar un email válido.'),
+    nombre: yup.string().required('*Nombre es un campo requerido.'),
+    apellido: yup.string().required('*Apellido es un campo requerido.'),
+    dni: yup.string().required('*DNI es un campo requerido.'),
+    direccion: yup.string().required('*Direccion es un campo requerido.'),
+    telefono: yup.string().required('*Telefono es un campo requerido.'),
     password: yup.string().required('*Campo requerido.'),
     repeatPassword: yup
       .string()
       .required('*Campo requerido.')
-      .oneOf([yup.ref('password')], 'Las contraseñas deben coincidir.')
+      .oneOf([yup.ref('password')], '*Las contraseñas deben coincidir.')
   })
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm({
     defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
-  // ** Styled Components
-  const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
-    [theme.breakpoints.up('sm')]: { width: '28rem' }
-  }))
-
-  const LinkStyled = styled('a')(({ theme }) => ({
-    fontSize: '0.875rem',
-    textDecoration: 'none',
-    color: theme.palette.primary.main
-  }))
-
-  const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
-    '& .MuiFormControlLabel-label': {
-      fontSize: '0.875rem',
-      color: theme.palette.text.secondary
-    }
-  }))
-
-  // ** State
-
-  // ** Hook
-  const theme = useTheme()
-
-  // const handleChange = (prop) => (event: ChangeEvent<HTMLInputElement>) => {
-  //   console.log(prop, "prooppp");
-  //   setValues({ ...values, [prop]: event.target.value });
-  // };
-
   const onSubmit = (values: any) => {
-    fetch(`users/newuser`, {
+    const auxvalues = { ...values, dni: parseFloat(values.dni) }
+    fetch(`autenticacion/registrarse`, {
       method: 'POST',
-      data: { ...values }
-      // url: `${URL}/users/newuser`
+      data: { ...auxvalues }
     })
+      .then(data => {
+        toast.success(data.data.msg, {
+          duration: 5000
+        })
+        reset()
+      })
+      .catch(error => {
+        toast.error(error.response.data.msg, {
+          duration: 5000,
+          style: {
+            zIndex: 999999999999
+          }
+        })
+      })
   }
-
-  // const handleClickShowPassword = () => {
-  //   setValues({ ...values, showPassword: !values.showPassword });
-  // };
-
-  // const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  // };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
@@ -112,12 +101,12 @@ export default function Register({ handleForm }) {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: 8
+          gap: 5
         }}
       >
         <FormControl fullWidth>
           <Controller
-            name='name'
+            name='nombre'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
@@ -134,16 +123,16 @@ export default function Register({ handleForm }) {
                 value={value}
                 onChange={onChange}
                 variant='filled'
-                error={Boolean(errors.name)}
+                error={Boolean(errors.nombre)}
               />
             )}
           />
 
-          {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
+          {errors.nombre && <FormHelperText sx={{ color: 'error.main' }}>{errors.nombre.message}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth>
           <Controller
-            name='username'
+            name='apellido'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
@@ -155,21 +144,100 @@ export default function Register({ handleForm }) {
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 label='Apellido'
+                color='warning'
                 size='small'
                 value={value}
                 onChange={onChange}
                 variant='filled'
-                color='warning'
-                error={Boolean(errors.username)}
+                error={Boolean(errors.apellido)}
               />
             )}
           />
 
-          {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
+          {errors.apellido && <FormHelperText sx={{ color: 'error.main' }}>{errors.apellido.message}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth>
           <Controller
-            name='email'
+            name='direccion'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => (
+              <TextFieldWrapper
+                sx={{
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
+                  borderRadius: '5px 5px 5px 5px'
+                }}
+                label='Dirección'
+                color='warning'
+                size='small'
+                value={value}
+                onChange={onChange}
+                variant='filled'
+                error={Boolean(errors.direccion)}
+              />
+            )}
+          />
+
+          {errors.direccion && <FormHelperText sx={{ color: 'error.main' }}>{errors.direccion.message}</FormHelperText>}
+        </FormControl>
+        <FormControl fullWidth>
+          <Controller
+            name='telefono'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => (
+              <TextFieldWrapper
+                sx={{
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
+                  borderRadius: '5px 5px 5px 5px'
+                }}
+                label='Teléfono'
+                color='warning'
+                size='small'
+                value={value}
+                onChange={onChange}
+                variant='filled'
+                error={Boolean(errors.telefono)}
+              />
+            )}
+          />
+
+          {errors.telefono && <FormHelperText sx={{ color: 'error.main' }}>{errors.telefono.message}</FormHelperText>}
+        </FormControl>
+        <FormControl fullWidth>
+          <Controller
+            name='dni'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => (
+              <TextFieldWrapper
+                sx={{
+                  backgroundColor: 'none',
+                  backdropFilter: 'blur(12px)',
+                  color: 'white',
+                  borderRadius: '5px 5px 5px 5px'
+                }}
+                label='Documento'
+                color='warning'
+                size='small'
+                value={value}
+                onChange={onChange}
+                variant='filled'
+                error={Boolean(errors.dni)}
+              />
+            )}
+          />
+
+          {errors.dni && <FormHelperText sx={{ color: 'error.main' }}>{errors.dni.message}</FormHelperText>}
+        </FormControl>
+
+        <FormControl fullWidth>
+          <Controller
+            name='username'
             control={control}
             rules={{ required: true }}
             render={({ field: { value, onChange } }) => (
@@ -186,12 +254,12 @@ export default function Register({ handleForm }) {
                 onChange={onChange}
                 variant='filled'
                 color='warning'
-                error={Boolean(errors.email)}
+                error={Boolean(errors.username)}
               ></TextFieldWrapper>
             )}
           />
 
-          {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+          {errors.username && <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth>
           <Controller
@@ -202,7 +270,7 @@ export default function Register({ handleForm }) {
               <TextFieldWrapper
                 size='small'
                 value={value}
-                label='Nueva contraseña'
+                label='Contraseña'
                 onChange={onChange}
                 variant='filled'
                 color='warning'
@@ -253,7 +321,7 @@ export default function Register({ handleForm }) {
                   borderRadius: '5px 5px 5px 5px'
                 }}
                 placeholder='Repetir contraseña'
-                error={Boolean(errors.password)}
+                error={Boolean(errors.repeatPassword)}
                 type={showRepeatPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
@@ -271,7 +339,9 @@ export default function Register({ handleForm }) {
               />
             )}
           />
-          {errors.password && <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>}
+          {errors.repeatPassword && (
+            <FormHelperText sx={{ color: 'error.main' }}>{errors.repeatPassword.message}</FormHelperText>
+          )}
         </FormControl>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: 'pointer', mt: 0 }}>
           <Button fullWidth size='large' type='submit' variant='contained'>

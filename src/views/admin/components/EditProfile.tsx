@@ -53,7 +53,7 @@ const initialState: IQueryFilter = {
   fecha: dayjs()
 }
 
-export default function CreateForm({ handleCloseDialog, open, type, title, inputs, url, id }: IProps) {
+export default function EditProfile({ handleCloseDialog, open, type, title, inputs, url, id }: IProps) {
   // ** Hooks
   const theme = useTheme()
   const { fetch, loading } = useFetch()
@@ -107,19 +107,19 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
   })
 
   const onSubmit = (values: any) => {
-    fetch(type === 'EDITAR' ? `${url}/${id}` : url, {
+    fetch(type === 'EDITAR' ? url : url, {
       method: type === 'EDITAR' ? 'PATCH' : 'POST',
       data: { ...values }
     })
       .then(data => {
-        toast.success(data?.data?.msg, {
+        toast.success(data.data.msg, {
           duration: 5000
         })
         reset()
         handleCloseDialog()
       })
       .catch(error => {
-        toast.error(error.response?.data?.msg, {
+        toast.error(error.response.data.msg, {
           duration: 5000,
           style: {
             zIndex: 999999999999
@@ -173,7 +173,7 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
               gap: 8
             }}
           >
-            {/* {title === 'Seguimiento' && <DateTimePickers query={query} handleQuery={handleQuery} />} */}
+            {title === 'Seguimiento' && <DateTimePickers query={query} handleQuery={handleQuery} />}
             {inputs?.map(item => (
               <FormControl key={item.name} sx={{ width: '100%' }}>
                 <Controller

@@ -97,7 +97,7 @@ export default function TableHeaders(props: TableHeardersProps) {
           {!isSmallScreen && <Divider orientation='vertical' flexItem />}
           <Button
             startIcon={<Icon icon='mdi:file-search' fontSize={22} />}
-            variant='outlined'
+            variant='contained'
             color='info'
             onClick={() => handleFilter('filtrar', 'find')}
             sx={{ height: '100%', width: isSmallScreen ? '100%' : 120 }}

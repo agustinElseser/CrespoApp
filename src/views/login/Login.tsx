@@ -33,33 +33,6 @@ import Register from 'src/views/login/Register'
 
 // ** Styled Components
 
-const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  [theme.breakpoints.down('xl')]: {
-    width: '100%'
-  },
-  [theme.breakpoints.down('md')]: {
-    maxWidth: 400
-  },
-  padding: 30,
-  borderRadius: 15,
-  backdropFilter: 'blur(5px)',
-  //backgroundColor: 'rgb(255,215,58,0.3)'
-  //backgroundColor: 'rgb(255,255,255,0.15)'
-  border: '1px solid rgb(255,255,255,0.55)',
-  '&.MuiFormControl-root': {
-    backgroundColor: 'none'
-  },
-  '.MuiTextField-root': {
-    backgroundColor: 'none'
-  },
-  '.MuiInputBase-root': {
-    backgroundColor: 'none'
-  },
-  '.MuiFilledInput-root': {
-    backgroundColor: 'none'
-  }
-}))
-
 export const TextFieldWrapper = styled(TextField)<TextFieldProps>(({ theme }) => ({
   '& .MuiInputBase-input.MuiFilledInput-input': {
     color: 'white',

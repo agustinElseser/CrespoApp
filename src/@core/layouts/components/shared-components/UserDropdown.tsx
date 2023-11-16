@@ -21,7 +21,7 @@ import { useAuth } from 'src/hooks/useAuth'
 
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
-import DialogChangeCompany from 'src/views/components/dialogs/DialogChangeCompany'
+
 import { IconButton, useTheme } from '@mui/material'
 
 interface Props {
@@ -108,7 +108,7 @@ const UserDropdown = (props: Props) => {
         <Divider sx={{ mt: '0 !important' }} />
         <MenuItem
           sx={{ py: 3, '& svg': { mr: 2, fontSize: '1.375rem', color: 'text.primary' } }}
-          onClick={() => handleDropdownClose('/perfil/actividad/')}
+          onClick={() => handleDropdownClose('/perfil')}
         >
           <Icon icon='mdi:account-outline' />
           Perfil

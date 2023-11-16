@@ -54,10 +54,10 @@ const RowOptionsMenu = ({ keyOfActivate, row }: IRowOptions) => {
         sx={{ minWidth: '3rem', p: 0, height: '2.5rem' }}
         aria-controls='simple-menu'
         aria-haspopup='true'
-        color='secondary'
+        color='info'
         onClick={handleRowOptionsClick}
       >
-        <Icon icon='mdi:dots-horizontal-circle' fontSize={22} />
+        <Icon icon='mdi:dots-horizontal-circle' fontSize={26} />
       </IconButton>
       <Menu keepMounted id='simple-menu' anchorEl={anchorEl} onClose={handleRowOptionsClose} open={Boolean(anchorEl)}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -203,7 +203,7 @@ export const tableClaims: any = [
     }
   },
   {
-    flex: 0.5,
+    width: 140,
     field: 'estado',
     sortable: false,
     align: 'center',
@@ -216,9 +216,11 @@ export const tableClaims: any = [
           size='small'
           label={row.estado.toUpperCase()}
           color={
-            row.estado.toLowerCase() === 'enviado'
+            row.estado === 'ENVIADO'
+              ? 'info'
+              : row.estado === 'INICIADO'
               ? 'warning'
-              : row.estado.toLowerCase() === 'finalizado'
+              : row.estado === 'RESUELTO'
               ? 'success'
               : 'error'
           }
@@ -310,23 +312,23 @@ export const tableClaimsResponsive: any = [
         <>
           <IconButton
             color={
-              row.estado.toLowerCase() === 'enviado'
-                ? 'warning'
-                : row.estado.toLowerCase() === 'iniciado'
+              row.estado === 'ENVIADO'
                 ? 'info'
-                : row.estado.toLowerCase() === 'resuelto'
+                : row.estado === 'INICIADO'
+                ? 'warning'
+                : row.estado === 'RESUELTO'
                 ? 'success'
                 : 'error'
             }
           >
-            {row.estado.toLowerCase() === 'enviado' ? (
-              <Icon icon='mdi:help-box-outline' fontSize={25} />
-            ) : row.estado.toLowerCase() === 'iniciado' ? (
-              <Icon icon='mdi:alert-box-outline' fontSize={25} />
-            ) : row.estado.toLowerCase() === 'resuelto' ? (
-              <Icon icon='mdi:checkbox-marked-outline' fontSize={25} />
+            {row.estado === 'ENVIADO' ? (
+              <Icon icon='mdi:help-box-outline' fontSize={27} />
+            ) : row.estado === 'INICIADO' ? (
+              <Icon icon='mdi:alert-box-outline' fontSize={27} />
+            ) : row.estado === 'RESUELTO' ? (
+              <Icon icon='mdi:checkbox-marked-outline' fontSize={27} />
             ) : (
-              <Icon icon='mdi:close-box-outline' fontSize={25} />
+              <Icon icon='mdi:close-box-outline' fontSize={27} />
             )}
           </IconButton>
           <RowOptionsMenu keyOfActivate={'enabled'} row={row} />

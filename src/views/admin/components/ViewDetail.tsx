@@ -10,6 +10,9 @@ import { useAuth } from 'src/hooks/useAuth'
 import { useFetch } from 'src/hooks/useFetch'
 import { Icon } from '@iconify/react'
 import { BoxScroll } from 'src/views/components/BoxScroll'
+import CustomChip from 'src/@core/components/mui/chip'
+import { DataGrid } from '@mui/x-data-grid'
+import { tableTracking } from 'src/views/reclamos/tables/tableTracking'
 
 interface IProps {
   handleCloseDialog: () => void
@@ -33,13 +36,14 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
     }
   }, [open && type === 'view-detail'])
 
+  console.log('dataDetail', dataDetail?.data?.Seguimiento)
   if (open && type === 'view-detail') {
     return (
       <Dialog maxWidth={'xl'} onClose={handleCloseDialog} open={open && type === 'view-detail'}>
         <DialogTitle
           id='customized-dialog-title'
           sx={{
-            p: 3,
+            p: 5,
             pt: 2,
             pb: 2,
             backgroundColor: theme.palette.primary.dark,
@@ -59,7 +63,7 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ mt: 3, p: 3, minWidth: 500 }}>
+        <DialogContent sx={{ mt: 3, p: 5, minWidth: 500 }}>
           <BoxScroll
             className='containScroll'
             sx={{
@@ -73,7 +77,7 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
             }}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Typography variant='body2' sx={{ fontWeight: 600 }}>
+              <Typography variant='body1' sx={{ fontWeight: 600 }}>
                 Información general
               </Typography>
               {dataDetail?.data &&
@@ -101,6 +105,25 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
 
                   return null
                 })}
+              {dataDetail && (
+                <Box sx={{ width: 800, mt: 6 }}>
+                  <Typography variant='body1' sx={{ fontWeight: 600 }}>
+                    Seguimiento
+                  </Typography>
+                  <Divider sx={{ mb: '0px !important' }} />
+
+                  <DataGrid
+                    rows={dataDetail?.data?.Seguimiento ?? []}
+                    columns={tableTracking}
+                    autoHeight
+                    disableColumnMenu
+                    disableColumnFilter
+                    disableColumnSelector
+                    hideFooterSelectedRowCount
+                    hideFooterPagination
+                  />
+                </Box>
+              )}
               <div
                 style={{
                   display: 'flex',

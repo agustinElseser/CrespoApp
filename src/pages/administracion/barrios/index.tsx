@@ -49,7 +49,7 @@ export default function NeighborhoodList() {
 
   const handleItem = () => {
     if (filter.inactivos) {
-      getData('barrio/todas')
+      getData('barrio/todos')
     } else {
       getData('barrio')
     }
@@ -59,7 +59,7 @@ export default function NeighborhoodList() {
 
   useEffect(() => {
     if (filter.inactivos) {
-      getData('barrio/todas')
+      getData('barrio/todos')
     } else {
       getData('barrio')
     }

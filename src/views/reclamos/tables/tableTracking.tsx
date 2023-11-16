@@ -97,7 +97,7 @@ const RowOptions = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['id', 'status', 'Seguimiento']}
+        ignore={['id', 'status']}
         title={'Detalle'}
         url='reclamos'
       />
@@ -205,7 +205,7 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['id', 'status', 'Seguimiento']}
+        ignore={['id', 'status']}
         title={'Detalle'}
         url='reclamos'
       />
@@ -239,126 +239,82 @@ interface ColumnItem {
   renderCell: ({ row }: CellType) => void
 }
 
-export const tableClaimsAdmin: any = handleItem => {
-  return [
-    {
-      width: 120,
-      field: 'id',
-      sortable: false,
-      headerName: 'Nº',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.id}
-          </Typography>
-        )
-      }
-    },
-    {
-      minWidth: 120,
-      flex: 1,
-      field: 'date',
-      sortable: false,
-      headerName: 'FECHA ALTA',
-      renderCell: ({ row }: CellType) => {
-        const date = new Date(row.date)
-        const dateFormat = date.toLocaleString('es-ES', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric'
-        })
+export const tableTracking: any = [
+  {
+    width: 140,
+    field: 'nombre',
 
-        return (
-          <Typography noWrap variant='body2'>
-            {row.fecha_creado}
-          </Typography>
-        )
-      }
-    },
-    {
-      minWidth: 140,
-      flex: 1,
-      field: 'calles',
-      headerName: 'Calle',
-      sortable: false,
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.calle.nombre} {row.altura}
-          </Typography>
-        )
-      }
-    },
-    {
-      minWidth: 140,
-      flex: 1,
-      field: 'calle',
-      headerName: 'Entre calles',
-      sortable: false,
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.entre_calle1.nombre} y {row.entre_calle2.nombre}
-          </Typography>
-        )
-      }
-    },
-    {
-      minWidth: 140,
-      flex: 1,
-      field: 'tipo_reclamo',
-      headerName: 'Tipo',
-      sortable: false,
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.tipo_reclamo.nombre}
-          </Typography>
-        )
-      }
-    },
-
-    {
-      width: 140,
-      flex: 0.5,
-      field: 'estado',
-      align: 'center',
-      headerAlign: 'center',
-      sortable: false,
-      headerName: 'ESTADO',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <CustomChip
-            skin='light'
-            size='small'
-            label={row.estado.toUpperCase()}
-            color={
-              row.estado === 'ENVIADO'
-                ? 'info'
-                : row.estado === 'INICIADO'
-                ? 'warning'
-                : row.estado === 'RESUELTO'
-                ? 'success'
-                : 'error'
-            }
-            sx={{ textTransform: 'capitalize', border: '1px solid' }}
-          />
-        )
-      }
-    },
-    {
-      minWidth: 150,
-      sortable: false,
-      headerAlign: 'center',
-      align: 'center',
-      field: 'actions',
-      headerName: 'ACCIONES',
-      renderCell: ({ row }: CellType) => <RowOptions keyOfActivate={'enabled'} row={row} handleItem={handleItem} />
+    sortable: false,
+    headerName: 'ESTADO',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <CustomChip
+          skin='light'
+          size='small'
+          label={row.nombre}
+          color={
+            row.nombre === 'ENVIADO'
+              ? 'info'
+              : row.nombre === 'INICIADO'
+              ? 'warning'
+              : row.nombre === 'RESUELTO'
+              ? 'success'
+              : 'error'
+          }
+          sx={{ textTransform: 'capitalize', border: '1px solid' }}
+        />
+      )
     }
-  ]
-}
+  },
+  {
+    width: 180,
+    field: 'fecha_creado',
+    sortable: false,
+    headerName: 'FECHA',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.fecha_creado}
+        </Typography>
+      )
+    }
+  },
+  {
+    minWidth: 230,
+    field: 'user',
+    sortable: false,
+    headerName: 'Usuario',
+    renderCell: ({ row }: CellType) => {
+      return (
+        <Typography noWrap variant='body2'>
+          {row.id_usuario.username}
+        </Typography>
+      )
+    }
+  },
+  {
+    minWidth: 250,
+    flex: 1,
+    field: 'descripcion',
+    sortable: false,
+    headerName: 'Descripción',
+    renderCell: ({ row }: CellType) => {
+      return row.descripcion.length < 40 ? (
+        <Typography noWrap variant='body2'>
+          {row.descripcion}
+        </Typography>
+      ) : (
+        <>
+          <Tooltip title={row.descripcion}>
+            <Typography noWrap variant='body2'>
+              {row.descripcion.slice(0, 40)}
+            </Typography>
+          </Tooltip>
+        </>
+      )
+    }
+  }
+]
 
 export const tableClaimsAdminResponsive: any = handleItem => {
   return [

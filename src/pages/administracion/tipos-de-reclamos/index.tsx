@@ -60,7 +60,7 @@ export default function ClaimsTypeList() {
 
   useEffect(() => {
     if (filter.inactivos) {
-      getData('tipo-reclamo/todas')
+      getData('tipo-reclamo/todos')
     } else {
       getData('tipo-reclamo')
     }
@@ -82,8 +82,10 @@ export default function ClaimsTypeList() {
   ]
 
   useEffect(() => {
-    if (open) {
-      getClaimsType('tipo-reclamo')
+    if (filter.inactivos) {
+      getData('tipo-reclamo/todos')
+    } else {
+      getData('tipo-reclamo')
     }
   }, [open])
 
