@@ -26,7 +26,6 @@ import toast from 'react-hot-toast'
 
 import IconifyIcon from 'src/@core/components/icon'
 import { useState } from 'react'
-import { Iservice } from '../apps/speech/createAnalysis/steps/FiltersAnalysis'
 
 interface IProps {
   handleCloseDialog: () => void
@@ -46,7 +45,7 @@ export default function EditForm({ handleCloseDialog, open, type, title, service
   const { fetch, loading, data } = useFetch()
 
   // ** State
-  const [services, setServices] = useState<Iservice[]>([])
+  const [services, setServices] = useState<any[]>([])
 
   const defaultValues = {
     id_servicio: undefined,

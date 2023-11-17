@@ -15,7 +15,7 @@ import { Box, CircularProgress, styled, useMediaQuery, useTheme } from '@mui/mat
 import { useForm } from 'react-hook-form'
 
 import toast from 'react-hot-toast'
-import generateSummary from '../utils/generateSummary'
+
 import DropzoneImg from '../components/DropzoneImg'
 import { Icon } from '@iconify/react'
 import MapComponent from '../components/Maps'

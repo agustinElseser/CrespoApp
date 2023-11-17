@@ -7,12 +7,11 @@ import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import { DigitalClock } from '@mui/x-date-pickers'
-import { IQueryAnalysis } from '../apps/speech/createAnalysis/context/AnalysisContext'
 
 dayjs.locale(es)
 interface IProps {
   disabled?: boolean
-  query: IQueryAnalysis | any
+  query: any
   handleQuery: any
 }
 

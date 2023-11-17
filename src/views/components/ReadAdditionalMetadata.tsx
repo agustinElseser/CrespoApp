@@ -19,13 +19,13 @@ import Icon from 'src/@core/components/icon'
 // ** Context
 import { useAuth } from 'src/hooks/useAuth'
 import { BoxScroll } from 'src/views/components/BoxScroll'
-import { IAudiosSTT } from 'src/pages/stt/audios'
+
 import { useFetch } from 'src/hooks/useFetch'
 
 interface IProps {
   handleCloseDialog: () => void
   id: string | number
-  row: IAudiosSTT | any
+  row: any
   keyOfActivate: string
   data: object
   open: boolean

@@ -5,7 +5,6 @@ import { DatePicker } from '@mui/x-date-pickers/'
 import { DateValidationError } from '@mui/x-date-pickers/models'
 import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
-import { IQuery } from './ReportsFilter'
 
 import { useMediaQuery, useTheme } from '@mui/material'
 

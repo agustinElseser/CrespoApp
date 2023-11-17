@@ -22,7 +22,6 @@ import { Alert, AlertTitle, FormHelperText, MenuItem, TextField, styled, useMedi
 
 import { ClaimContext } from '../context/ClaimContext'
 
-import groupByHash from '../utils/groupByHash'
 import { steps } from '../StepperCreateClaim'
 
 import { useAuth } from 'src/hooks/useAuth'
@@ -136,6 +135,7 @@ export const DataUser = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
+    //@ts-ignore
     <form key={0} onSubmit={handleSubmit(onSubmit)}>
       <Grid container sx={{ minHeight: 400, p: 2 }} alignContent={'space-between'}>
         {!isSmallScreen && (

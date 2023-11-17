@@ -21,8 +21,6 @@ import { useFetch } from 'src/hooks/useFetch'
 import { FormHelperText, MenuItem, TextField, styled, useMediaQuery, useTheme } from '@mui/material'
 
 import { ClaimContext } from '../context/ClaimContext'
-
-import groupByHash from '../utils/groupByHash'
 import { steps } from '../StepperCreateClaim'
 import { useAuth } from 'src/hooks/useAuth'
 import { idID } from '@mui/material/locale'

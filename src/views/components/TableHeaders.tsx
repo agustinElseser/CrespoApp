@@ -8,7 +8,7 @@ import { Dayjs } from 'dayjs'
 import { useState } from 'react'
 import SearchFilter, { IQueryFilter } from './SearchFilter'
 import { IconExcel } from './IconExcel'
-import SendReport from './SendReport'
+
 import { Icon } from '@iconify/react'
 import { useAuth } from 'src/hooks/useAuth'
 

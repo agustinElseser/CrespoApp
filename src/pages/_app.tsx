@@ -8,7 +8,7 @@ import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
 // ** Store Imports
-import { store } from 'src/store'
+
 import { Provider } from 'react-redux'
 
 // ** Loader Import
@@ -117,51 +117,49 @@ const App = (props: ExtendedAppProps) => {
   console.log('aclAbilities', aclAbilities)
 
   return (
-    <Provider store={store}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <title>Crespo - App </title>
-          <meta name='description' content={`${themeConfig.templateName} `} />
-          <meta name='keywords' content='data' />
-          <meta name='viewport' content='initial-scale=1, width=device-width' />
-        </Head>
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <title>Crespo - App </title>
+        <meta name='description' content={`${themeConfig.templateName} `} />
+        <meta name='keywords' content='data' />
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
+      </Head>
 
-        <AuthProvider>
-          <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
-            <SettingsConsumer>
-              {({ settings }) => {
-                return (
-                  <ThemeComponent settings={settings}>
-                    <WindowWrapper>
-                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                        <SessionChecker>
-                          <UserRolChecker>
-                            <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>
-                              {getLayout(<Component {...pageProps} />)}
-                            </AclGuard>
-                          </UserRolChecker>
-                        </SessionChecker>
-                      </Guard>
-                    </WindowWrapper>
-                    <ReactHotToast>
-                      <Toaster
-                        position='bottom-right'
-                        toastOptions={{
-                          className: 'react-hot-toast',
-                          style: {
-                            zIndex: 999999999
-                          }
-                        }}
-                      />
-                    </ReactHotToast>
-                  </ThemeComponent>
-                )
-              }}
-            </SettingsConsumer>
-          </SettingsProvider>
-        </AuthProvider>
-      </CacheProvider>
-    </Provider>
+      <AuthProvider>
+        <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return (
+                <ThemeComponent settings={settings}>
+                  <WindowWrapper>
+                    <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                      <SessionChecker>
+                        <UserRolChecker>
+                          <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>
+                            {getLayout(<Component {...pageProps} />)}
+                          </AclGuard>
+                        </UserRolChecker>
+                      </SessionChecker>
+                    </Guard>
+                  </WindowWrapper>
+                  <ReactHotToast>
+                    <Toaster
+                      position='bottom-right'
+                      toastOptions={{
+                        className: 'react-hot-toast',
+                        style: {
+                          zIndex: 999999999
+                        }
+                      }}
+                    />
+                  </ReactHotToast>
+                </ThemeComponent>
+              )
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </AuthProvider>
+    </CacheProvider>
   )
 }
 

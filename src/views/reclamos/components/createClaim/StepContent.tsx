@@ -3,8 +3,6 @@ import { useContext } from 'react'
 
 // **  Components
 import { ClaimContext } from './context/ClaimContext'
-
-import { DataComparation } from './steps/DataComparation'
 import { UploadSummary } from './steps/UploadSummary'
 import { DataUser } from './steps/DataUser'
 import { DataClaims } from './steps/DataClaims'

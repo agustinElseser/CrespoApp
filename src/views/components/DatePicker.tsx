@@ -5,13 +5,12 @@ import { DatePicker } from '@mui/x-date-pickers/'
 import { DateValidationError } from '@mui/x-date-pickers/models'
 import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
-import { IQuery } from './ReportsFilter'
 
 dayjs.locale(es)
 
 interface DatePickersProps {
-  query: IQuery
-  handleQuery: (name: keyof IQuery, value: IQuery[keyof IQuery]) => void
+  query: any
+  handleQuery: () => void
 }
 export default function DateDay({ query, handleQuery }: DatePickersProps) {
   //** States
@@ -34,7 +33,7 @@ export default function DateDay({ query, handleQuery }: DatePickersProps) {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label='Fecha'
-          onChange={(date: any) => handleQuery('fecha', date)}
+          onChange={(date: any) => handleQuery()}
           value={query.fecha}
           format={'DD/MM/YYYY'}
           slotProps={{

@@ -5,7 +5,6 @@ import { DataGrid } from '@mui/x-data-grid'
 import { useMediaQuery, useTheme } from '@mui/material'
 
 import { useFetch } from 'src/hooks/useFetch'
-import { dataToExcel } from 'src/views/utils/dataToExcel'
 import { IQueryFilter } from 'src/views/components/SearchFilter'
 import TableHeaders from 'src/views/components/TableHeaders'
 import { tableClaimsAdmin, tableClaimsAdminResponsive } from 'src/views/reclamos/tables/tableClaimAdmin'
@@ -48,7 +47,7 @@ export default function AudioList() {
   }
 
   const handleDowload = type => {
-    dataToExcel(type === 'all' ? data : data?.slice(currentPage * pageSize, (currentPage + 1) * pageSize))
+    //dataToExcel(type === 'all' ? data : data?.slice(currentPage * pageSize, (currentPage + 1) * pageSize))
   }
 
   const handleItem = () => {
