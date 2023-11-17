@@ -129,7 +129,9 @@ const LoginPage = () => {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundImage: `url('https://res.cloudinary.com/mostarq/image/upload/v1699826052/Proyects/vk5wlsnm7fnlnytdfcjz.jpg')`,
+          backgroundImage: !isSmallScreen
+            ? `url('https://res.cloudinary.com/mostarq/image/upload/v1700238462/Proyects/l9zizyftxddoaybm0mui.jpg')`
+            : `url('https://res.cloudinary.com/mostarq/image/upload/v1700238462/Proyects/l9zizyftxddoaybm0mui.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -139,8 +141,9 @@ const LoginPage = () => {
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
+            alignItems: !isSmallScreen ? 'start' : 'center',
+            justifyContent: 'center',
+            pl: !isSmallScreen ? 30 : 0
           }}
         >
           <BoxWrapper>

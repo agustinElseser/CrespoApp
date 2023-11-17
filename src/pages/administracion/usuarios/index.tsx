@@ -103,7 +103,7 @@ export default function UserList() {
       label: 'Area',
       select: true,
       multiple: true,
-      options: dataAreas.data
+      options: dataAreas?.data
     }
   ]
 

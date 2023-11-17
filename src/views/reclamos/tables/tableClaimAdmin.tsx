@@ -102,7 +102,7 @@ const RowOptions = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['id', 'status', 'Seguimiento']}
+        ignore={['id', 'status', 'Seguimiento', 'img']}
         title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
         url='reclamos'
       />
@@ -154,16 +154,20 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
     setOpenDialog(true)
     setAnchorEl(null)
   }
-
   const inputs: IFormItem[] = [
     {
-      name: 'status',
+      name: 'nombre',
       label: 'Estado',
       select: true,
-      options: [{ id: '1', nombre: 'EN REVISIÓN' }]
+      options: [
+        { id: 'INICIADO', nombre: 'INICIADO' },
+        { id: 'RESUELTO', nombre: 'RESUELTO' },
+        { id: 'RECHAZADO', nombre: 'RECHAZADO' }
+      ],
+      validation: yup.string().required('Este campo es requerido.')
     },
     {
-      name: 'observacion',
+      name: 'descripcion',
       label: 'Descripción',
       placeholder: 'Ingrese detalles del estado actual...',
       multiline: true,
@@ -214,7 +218,7 @@ const RowOptionsMenu = ({ keyOfActivate, row, handleItem }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['id', 'status', 'Seguimiento']}
+        ignore={['id', 'status', 'Seguimiento', 'img']}
         title={`Detalle reclamo`}
         url='reclamos'
       />

@@ -32,7 +32,7 @@ export function applyFilter(data, filter) {
       return false
     }
 
-    const itemValuesValid = searchValueInObject(item, value ? value.toLowerCase() : '')
+    const itemValuesValid = searchValueInObject(item, value ? value?.toLowerCase() : '')
 
     return fechaValida && (idValido || itemValuesValid)
   })

@@ -27,12 +27,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 import { IconButton, InputAdornment, Link, MenuItem, Stack } from '@mui/material'
 import IconifyIcon from 'src/@core/components/icon'
-import SvgLogo from 'src/views/components/svgs/SvgLogo'
-import SvgMia from 'src/views/components/svgs/SvgMia'
-import SvgSpeech from 'src/views/components/svgs/SvgSpeech'
-import SvgChatBot from 'src/views/components/svgs/SvgChatBot'
-import SvgSms from 'src/views/components/svgs/SvgSms'
-import SvgMailing from 'src/views/components/svgs/SvgMailing'
+
 import { Icon } from '@iconify/react'
 import ResetPassword from 'src/views/components/ResetPassword'
 
@@ -123,19 +118,7 @@ const ResetPage = () => {
   const username = useWatch({ control: control, name: 'username' })
 
   const onSubmit = (data: FormData) => {
-    const { username, password, id_cliente } = data
-
-    if (password === undefined) {
-      auth.companyUser(data.username)
-    } else {
-      const idSelect = auth.companies && auth.companies.length <= 1 ? auth?.companies[0].id : id_cliente
-      auth.login({ username, password, id_cliente: idSelect }, () => {
-        setError('password', {
-          type: 'manual',
-          message: 'Contraseña incorrecta'
-        })
-      })
-    }
+    //
   }
 
   useEffect(() => {
@@ -182,7 +165,6 @@ const ResetPage = () => {
         >
           <BoxWrapper>
             <Stack direction='column' justifyContent='center' alignItems='center' spacing={10}>
-              <SvgLogo />
               <Stack direction='column' justifyContent='center' alignItems='center' spacing={4}>
                 <TypographyWhite variant='h5'>Bienvenido</TypographyWhite>
                 <TypographyWhite variant='body1'>Establece una nueva contraseña</TypographyWhite>
@@ -273,50 +255,6 @@ const ResetPage = () => {
               </Box>
             </Stack>
           </BoxWrapper>
-        </Box>
-        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'end', p: 15 }}>
-          <Stack alignItems='end' justifyContent='end' gap={12}>
-            <div
-              onMouseEnter={e => handleMouseEnter(e, 'MIA')}
-              onMouseLeave={() => handleMouseLeave()}
-              className='loginSVG'
-            >
-              <Typography variant='h5'>MIA</Typography>
-              <SvgMia />
-            </div>
-            <div
-              onMouseEnter={e => handleMouseEnter(e, 'SPEECH ANALYTICS')}
-              onMouseLeave={() => handleMouseLeave()}
-              className='loginSVG'
-            >
-              <Typography variant='h5'>SPEECH ANALYTICS</Typography>
-              <SvgSpeech />
-            </div>
-            <div
-              onMouseEnter={e => handleMouseEnter(e, 'CHATBOT')}
-              onMouseLeave={() => handleMouseLeave()}
-              className='loginSVG'
-            >
-              <Typography variant='h5'>CHATBOT</Typography>
-              <SvgChatBot />
-            </div>
-            <div
-              onMouseEnter={e => handleMouseEnter(e, 'SMS')}
-              onMouseLeave={() => handleMouseLeave()}
-              className='loginSVG'
-            >
-              <Typography variant='h5'>SMS</Typography>
-              <SvgSms />
-            </div>
-            <div
-              onMouseEnter={e => handleMouseEnter(e, 'MAILING')}
-              onMouseLeave={() => handleMouseLeave()}
-              className='loginSVG'
-            >
-              <Typography variant='h5'>MAILING</Typography>
-              <SvgMailing />
-            </div>
-          </Stack>
         </Box>
       </Box>
       <ResetPassword handleCloseDialog={handleClose} open={open} />
