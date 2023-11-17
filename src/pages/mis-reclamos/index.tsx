@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
@@ -12,6 +12,7 @@ import StepperCreateClaim from 'src/views/reclamos/components/createClaim/Steppe
 import dayjs from 'dayjs'
 import { ClaimProvider } from 'src/views/reclamos/components/createClaim/context/ClaimContext'
 import { tableClaims, tableClaimsResponsive } from 'src/views/reclamos/tables/tableClaims'
+import { applyFilter } from 'src/utils/applyFilter'
 
 const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
@@ -26,9 +27,10 @@ export default function MyClaimsList() {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
   const [filter, setFilter] = useState<IQueryFilter>(initialFilter)
+  const [data, setData] = useState<any[]>()
 
   //** Hooks
-  const { fetch, data, loading } = useFetch()
+  const { fetch, data: dataGet, loading } = useFetch()
 
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -60,7 +62,16 @@ export default function MyClaimsList() {
     getData()
   }, [open, filter?.desde, filter?.hasta, pageSize, currentPage, filter?.value])
 
-  console.log('filter', filter)
+  const filteredData = useMemo(() => {
+    const dataToFilter = dataGet?.data
+
+    if (dataToFilter) {
+      const dataFilter = applyFilter(dataToFilter, filter)
+      setData(dataFilter)
+
+      return dataFilter
+    }
+  }, [filter, dataGet.data])
 
   return (
     <>
@@ -76,7 +87,7 @@ export default function MyClaimsList() {
               filter={filter}
             />
             <DataGrid
-              rows={data.data ?? []}
+              rows={data ?? []}
               columns={isSmallScreen ? tableClaimsResponsive : tableClaims}
               autoHeight
               disableColumnMenu

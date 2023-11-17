@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { DataGrid } from '@mui/x-data-grid'
@@ -12,6 +12,7 @@ import CreateForm, { IFormItem } from 'src/views/admin/components/CreateForm'
 import { useAuth } from 'src/hooks/useAuth'
 import * as yup from 'yup'
 import { TableAdminUsers, TableAdminUsersResponsive } from 'src/views/admin/tables/tableAdminUsers'
+import { applyFilter } from 'src/utils/applyFilter'
 
 const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
@@ -27,10 +28,10 @@ export default function UserList() {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
   const [filter, setFilter] = useState<IQueryFilter>(initialFilter)
-  //const [data, setData] = useState<IAudiosSA[]>()
+  const [data, setData] = useState<any[]>()
 
   //** Hooks
-  const { fetch, data, loading } = useFetch()
+  const { fetch, data: dataGet, loading } = useFetch()
   const { fetch: getAreas, data: dataAreas } = useFetch()
   const theme = useTheme()
   const { user } = useAuth()
@@ -106,6 +107,17 @@ export default function UserList() {
     }
   ]
 
+  const filteredData = useMemo(() => {
+    const dataToFilter = dataGet?.data
+
+    if (dataToFilter) {
+      const dataFilter = applyFilter(dataToFilter, filter)
+      setData(dataFilter)
+
+      return dataFilter
+    }
+  }, [filter, dataGet.data])
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
   const tableConfig = isSmallScreen
     ? TableAdminUsersResponsive(handleItem, 'usuario', 'admin')
@@ -124,7 +136,7 @@ export default function UserList() {
               filter={filter}
             />
             <DataGrid
-              rows={data?.data ?? []}
+              rows={data ?? []}
               columns={tableConfig}
               autoHeight
               disableColumnMenu

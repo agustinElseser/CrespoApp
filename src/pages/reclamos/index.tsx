@@ -10,6 +10,7 @@ import { IQueryFilter } from 'src/views/components/SearchFilter'
 import TableHeaders from 'src/views/components/TableHeaders'
 import { tableClaimsAdmin, tableClaimsAdminResponsive } from 'src/views/reclamos/tables/tableClaimAdmin'
 import dayjs, { Dayjs } from 'dayjs'
+import { applyFilter } from 'src/utils/applyFilter'
 
 const initialFilter = {
   desde: dayjs().startOf('month').startOf('day'),
@@ -24,9 +25,10 @@ export default function AudioList() {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [open, setOpen] = useState<boolean>(false)
   const [filter, setFilter] = useState<IQueryFilter>(initialFilter)
+  const [data, setData] = useState<any[]>()
 
   //** Hooks
-  const { fetch, data, loading } = useFetch()
+  const { fetch, data: dataGet, loading } = useFetch()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -67,6 +69,17 @@ export default function AudioList() {
     setFilter({ ...filter, filtrar: '' })
   }, [open, filter?.desde, filter?.hasta, pageSize, currentPage, filter?.value, filter?.filtrar, filter.inactivos])
 
+  const filteredData = useMemo(() => {
+    const dataToFilter = dataGet?.data
+
+    if (dataToFilter) {
+      const dataFilter = applyFilter(dataToFilter, filter)
+      setData(dataFilter)
+
+      return dataFilter
+    }
+  }, [filter, dataGet.data])
+
   return (
     <>
       <Grid container spacing={6}>
@@ -80,7 +93,7 @@ export default function AudioList() {
               filter={filter}
             />
             <DataGrid
-              rows={data?.data ?? []}
+              rows={data ?? []}
               columns={isSmallScreen ? tableClaimsAdminResponsive(handleItem) : tableClaimsAdmin(handleItem)}
               autoHeight
               disableColumnMenu
