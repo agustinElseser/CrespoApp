@@ -187,7 +187,7 @@ export const tableClaims: any = [
     sortable: false,
     headerName: 'FECHA ALTA',
     renderCell: ({ row }: CellType) => {
-      const fecha = dayjs(row.fecha_editado)
+      const fecha = dayjs(row.fecha_creado)
 
       return (
         <Typography noWrap variant='body2'>
@@ -229,18 +229,11 @@ export const tableClaims: any = [
     sortable: false,
     headerName: 'FECHA MODIFICACIÓN',
     renderCell: ({ row }: CellType) => {
-      const date = new Date(row.date)
-      const dateFormat = date.toLocaleString('es-ES', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      })
+      const fecha = dayjs(row.fecha_editado)
 
       return (
         <Typography noWrap variant='body2'>
-          {row.fecha_editado}
+          {fecha.format('DD/MM/YY - HH:mm')}
         </Typography>
       )
     }

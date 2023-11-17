@@ -60,6 +60,8 @@ export default function MyClaimsList() {
     getData()
   }, [open, filter?.desde, filter?.hasta, pageSize, currentPage, filter?.value])
 
+  console.log('filter', filter)
+
   return (
     <>
       <Grid container spacing={6}>
