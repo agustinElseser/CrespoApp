@@ -40,7 +40,7 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
 
   if (open && type === 'view-detail') {
     return (
-      <Dialog maxWidth={'xl'} onClose={handleCloseDialog} open={open && type === 'view-detail'}>
+      <Dialog maxWidth={isSmallScreen ? 'xs' : 'xl'} onClose={handleCloseDialog} open={open && type === 'view-detail'}>
         <DialogTitle
           id='customized-dialog-title'
           sx={{
@@ -64,7 +64,7 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
             <Icon icon='mdi:close' />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ mt: 3, p: 5, minWidth: 300 }}>
+        <DialogContent sx={{ mt: 3, p: 5, minWidth: isSmallScreen ? 300 : 400 }}>
           <BoxScroll
             className='containScroll'
             sx={{

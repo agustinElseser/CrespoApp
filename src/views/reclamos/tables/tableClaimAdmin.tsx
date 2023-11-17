@@ -323,8 +323,8 @@ export const tableClaimsAdmin: any = handleItem => {
     },
 
     {
-      width: 140,
-      flex: 0.5,
+      width: 170,
+
       field: 'estado',
       align: 'center',
       headerAlign: 'center',
@@ -378,7 +378,7 @@ export const tableClaimsAdminResponsive: any = handleItem => {
       }
     },
     {
-      width: 70,
+      width: 75,
       field: 'fecha_editado',
       sortable: false,
       headerName: 'FECHA',

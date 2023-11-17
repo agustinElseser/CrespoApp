@@ -4,7 +4,16 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import { Box, Button, DialogActions, FormControl, FormHelperText, MenuItem, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  DialogActions,
+  FormControl,
+  FormHelperText,
+  MenuItem,
+  TextField,
+  useMediaQuery
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useFetch } from 'src/hooks/useFetch'
 
@@ -131,9 +140,10 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
   const handleQuery = (name: keyof IQueryFilter, value: IQueryFilter[keyof IQueryFilter]) => {
     setQuery({ ...query, [name]: value })
   }
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Dialog maxWidth={'xs'} onClose={handleCloseDialog} open={open} sx={{ zIndex: 999 }}>
+    <Dialog maxWidth={isSmallScreen ? 'xs' : 'md'} onClose={handleCloseDialog} open={open} sx={{ zIndex: 999 }}>
       <form id={title} onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle
           id='customized-dialog-title'
@@ -164,7 +174,7 @@ export default function CreateForm({ handleCloseDialog, open, type, title, input
         <DialogContent sx={{ p: 6, mt: 3 }}>
           <Box
             sx={{
-              minWidth: 350,
+              minWidth: isSmallScreen ? 200 : 350,
               mt: 4,
               mb: 1,
               display: 'flex',

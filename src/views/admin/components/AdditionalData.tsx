@@ -1,6 +1,6 @@
 // ** React Imports
 import { useEffect } from 'react'
-import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material'
+import { Box, Dialog, DialogContent, DialogTitle, IconButton, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 import { useFetch } from 'src/hooks/useFetch'
@@ -26,11 +26,11 @@ export default function AdditionalData({ handleCloseDialog, open, type, title, u
     }
   }, [open && type === 'DATALLE'])
 
-  console.log('metadata', data)
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Dialog maxWidth={'xl'} onClose={handleCloseDialog} open={open && type === 'DATALLE'}>
-      <Box sx={{ width: '500px' }}>
+    <Dialog maxWidth={isSmallScreen ? 'xs' : 'md'} onClose={handleCloseDialog} open={open && type === 'DATALLE'}>
+      <Box sx={{ minWidth: isSmallScreen ? 200 : 500 }}>
         <DialogTitle
           id='customized-dialog-title'
           sx={{
@@ -76,7 +76,14 @@ export default function AdditionalData({ handleCloseDialog, open, type, title, u
               </Typography>
               {data.data &&
                 Object.entries(data.data).map(([key, value]: any) => {
-                  if (key !== 'json' && key !== 'nombre_audio' && key !== 'id') {
+                  if (
+                    key !== 'json' &&
+                    key !== 'nombre_audio' &&
+                    key !== 'id' &&
+                    key !== 'activo' &&
+                    key !== 'entidad' &&
+                    key !== 'fecha_creado'
+                  ) {
                     return (
                       <Box key={key} sx={{ display: 'flex' }}>
                         <Typography variant='body2' component={'span'} sx={{ color: 'black', minWidth: '40%' }}>

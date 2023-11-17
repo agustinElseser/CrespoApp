@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import { Box, Button, DialogActions, Divider, Theme, createStyles } from '@mui/material'
+import { Box, Button, DialogActions, Divider, Theme, createStyles, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useFetch } from 'src/hooks/useFetch'
 
@@ -43,9 +43,10 @@ export default function DeleteForm({ handleCloseDialog, open, type, title, url, 
         })
       })
   }
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Dialog maxWidth={'xs'} onClose={handleCloseDialog} open={open} fullWidth>
+    <Dialog maxWidth={isSmallScreen ? 'xs' : 'xs'} onClose={handleCloseDialog} open={open} fullWidth>
       <DialogTitle
         id='customized-dialog-title'
         sx={{
@@ -73,9 +74,15 @@ export default function DeleteForm({ handleCloseDialog, open, type, title, url, 
         </IconButton>
       </DialogTitle>
       <DialogContent
-        sx={{ padding: 6, minHeight: 130, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        sx={{
+          padding: 6,
+          minWidth: isSmallScreen ? 200 : 200,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
       >
-        <Typography sx={{ color: 'rgba(0,0,0,0.7)', fontWeight: 400, textAlign: 'center' }}>
+        <Typography sx={{ color: 'rgba(0,0,0,0.7)', fontWeight: 400, textAlign: 'center', mt: 6 }}>
           {title === 'calle'
             ? `¿Esta seguro/a que desea eliminar esta ${title}?`
             : `¿Esta seguro/a que desea eliminar este ${title}?`}

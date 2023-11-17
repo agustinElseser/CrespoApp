@@ -10,6 +10,7 @@ import CustomChip from 'src/@core/components/mui/chip'
 import * as yup from 'yup'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
+import AdditionalData from '../components/AdditionalData'
 
 interface CellType {
   row: any
@@ -81,7 +82,7 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Tooltip title='Ver detalle'>
-          <IconButton color='info'>
+          <IconButton color='info' onClick={() => handleOpenDialog('additional')}>
             <Icon icon='mdi:file-eye' fontSize={26} />
           </IconButton>
         </Tooltip>
@@ -105,6 +106,16 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
           inputs={inputs}
           url={url}
           id={row.id}
+        />
+      )}
+      {openDialog && type === 'additional' && (
+        <AdditionalData
+          open={openDialog && type === 'additional'}
+          type='DATALLE'
+          title={row.rol}
+          handleCloseDialog={handleCloseDialog}
+          id={row.id}
+          url={url}
         />
       )}
       {openDialog && type === 'delete' && (
@@ -197,7 +208,7 @@ const RowOptionsResponsive = ({ row, item, handleItem, url }: IRowOptions) => {
       <Menu keepMounted id='simple-menu' anchorEl={anchorEl} onClose={handleRowOptionsClose} open={Boolean(anchorEl)}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title='Ver detalle'>
-            <IconButton color='info'>
+            <IconButton color='info' onClick={() => handleOpenDialog('additional')}>
               <Icon icon='mdi:file-eye' fontSize={26} />
             </IconButton>
           </Tooltip>
@@ -222,6 +233,16 @@ const RowOptionsResponsive = ({ row, item, handleItem, url }: IRowOptions) => {
           inputs={inputs}
           url={url}
           id={row.id}
+        />
+      )}
+      {openDialog && type === 'additional' && (
+        <AdditionalData
+          open={openDialog && type === 'additional'}
+          type='DATALLE'
+          title={row.rol}
+          handleCloseDialog={handleCloseDialog}
+          id={row.id}
+          url={url}
         />
       )}
       {openDialog && type === 'delete' && (

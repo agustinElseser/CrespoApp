@@ -188,7 +188,7 @@ const RowOptionsResponsive = ({ row, item, handleItem, url }: IRowOptions) => {
         <AdditionalData
           open={openDialog && type === 'additional'}
           type='DATALLE'
-          title={row.nombre}
+          title={item}
           handleCloseDialog={handleCloseDialog}
           id={row.id}
           url={url}
