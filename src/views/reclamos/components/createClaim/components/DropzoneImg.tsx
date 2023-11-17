@@ -64,7 +64,7 @@ const imgs: Accept = {
 
 export default function DropzoneImg() {
   // ** Hooks
-  const { query, handleQuery } = useContext(ClaimContext)
+  const { query, image, handleQuery, setImages } = useContext(ClaimContext)
 
   // ** States
   const [files, setFiles] = useState<FileWithPreview[]>([])
@@ -76,7 +76,7 @@ export default function DropzoneImg() {
     reader.onload = () => {
       const fileContents = reader.result
       if (fileContents) {
-        handleQuery('img', [
+        setImages([
           Object.assign(file, {
             id: file.name,
             preview: URL.createObjectURL(file)
@@ -128,9 +128,9 @@ export default function DropzoneImg() {
         </Box>
       </Box>
 
-      {query.img?.length > 0 && (
+      {image?.length > 0 && (
         <Grid container sx={{ mt: 5 }}>
-          {query.img.map((file: any) => (
+          {image?.map((file: any) => (
             <Grid item key={file.name} xs={12}>
               <ListItem
                 key={file.name}

@@ -25,55 +25,62 @@ interface IFormItem3 {
 }
 
 export const UploadSummary = ({ handleClose }: any) => {
-  // ** Hooks
-  const { fetch, data } = useFetch()
-  const { query, activeStep, setActiveStep, handleQuery, handleFinished } = useContext(ClaimContext)
+  const { image, activeStep, setActiveStep, handleQuery, handleFinished } = useContext(ClaimContext)
+  const [formData, setFormData] = useState({ image: [] })
+  const [loading, setLoading] = useState<boolean>(false)
+  const [img, setImg] = useState('')
 
   // **Functions
   const handleBack = () => {
     setActiveStep(activeStep - 1)
   }
 
-  const items: IFormItem3[] = [
-    {
-      images: []
-    }
-  ]
-  const {
-    control: control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue
-  } = useForm({
-    mode: 'onChange'
-  })
-
-  const [formData, setFormData] = useState({ image: [] })
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target
-    const file = event.target.files && event.target.files[0]
-    try {
-      if (file) {
-        const result = await uploadFile(file)
-        const reader = new FileReader()
-
-        //@ts-ignore
-        setFormData(prevFormData => ({
-          ...prevFormData,
-          image: [...prevFormData.image, result]
-        }))
-        //handleUploadImage(result)
-        reader.readAsDataURL(file)
+  async function handleSend() {
+    toast.loading('Subiendo imagen..', {
+      duration: 2000,
+      style: {
+        zIndex: 999999
       }
-    } catch (err) {
-      console.log(err)
-      alert(err)
-    }
-  }
+    })
+    setLoading(true)
 
-  const handleSend = async () => {
-    await handleFinished(formData.image)
+    const arrayimg: string[] = []
+    const files = image
+
+    const url = 'https://api.cloudinary.com/v1_1/mostarq/image/upload'
+    const formData = new FormData()
+
+    for (let i = 0; i < image.length; i++) {
+      const file = image[i]
+      formData.append('file', file)
+      formData.append('upload_preset', 'arquitectura')
+
+      await fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(response => {
+          arrayimg.push(response.secure_url)
+          toast.success('Imagen subida.', {
+            duration: 5000
+          })
+        })
+        .catch(error => {
+          toast.error('Error al subir imagen.', {
+            duration: 5000,
+            style: {
+              zIndex: 999999999999
+            }
+          })
+        })
+    }
+
+    handleQuery('img', arrayimg)
+
+    setLoading(false)
+
+    await handleFinished(arrayimg)
   }
 
   const theme = useTheme()
@@ -81,41 +88,18 @@ export const UploadSummary = ({ handleClose }: any) => {
 
   return (
     <Grid container sx={{ minHeight: 400 }} alignContent={'space-between'} justifyContent={'center'}>
-      <DropzoneImg />
-      {/* <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label className='block uppercase text-blueGray-600 text-xs font-bold mb-2'>Agrega imagenes *</label>
-          <input
-            className='appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline'
-            type='file'
-            name='image'
-            onChange={e => handleImageChange(e)}
-            placeholder='Sube tu foto de perfil'
-          />
-        </div> */}
-
-      {/* {formData
-        ? formData.image.map((e, index) => (
-            <div style={{ display: 'flex', flexDirection: 'row' }} key={index}>
-              <img
-                style={{
-                  maxHeight: '200px',
-                  maxWidth: '300px',
-                  display: 'flex',
-                  flexDirection: 'row'
-                }}
-                src={e}
-                alt='Imagen subida'
-              />
-            </div>
-          ))
-        : null} */}
-      {/* <button
-            onClick={() => handleFinish()}
-            style={{ position: "absolute", bottom: "10px", right: "10px" }}
-          >
-            Finalizar
-          </button> */}
+      <Box
+        sx={{
+          width: '100%',
+          minHeight: 400,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <DropzoneImg />
+      </Box>
 
       <Grid container sx={{ alignSelf: 'end', justifyContent: 'space-between', mt: 8, gap: 5 }}>
         <Button
@@ -125,6 +109,7 @@ export const UploadSummary = ({ handleClose }: any) => {
           onClick={() => handleBack()}
           //startIcon={<Icon fontSize={22} color='warning' icon='mdi:arrow-left-circle' />}
           sx={isSmallScreen ? { flex: 1 } : {}}
+          disabled={loading}
         >
           Atrás
         </Button>
@@ -135,6 +120,7 @@ export const UploadSummary = ({ handleClose }: any) => {
           variant='contained'
           startIcon={<Icon fontSize={22} color='warning' icon='mdi:receipt-text-arrow-right' />}
           sx={isSmallScreen ? { flex: 1 } : {}}
+          disabled={loading}
         >
           Enviar
         </Button>

@@ -10,7 +10,7 @@ import TableHeaders from 'src/views/components/TableHeaders'
 import { CumstomDialog } from 'src/views/components/CustomDialog'
 import StepperCreateClaim from 'src/views/reclamos/components/createClaim/StepperCreateClaim'
 import dayjs from 'dayjs'
-import { SpeechProvider } from 'src/views/reclamos/components/createClaim/context/ClaimContext'
+import { ClaimProvider } from 'src/views/reclamos/components/createClaim/context/ClaimContext'
 import { tableClaims, tableClaimsResponsive } from 'src/views/reclamos/tables/tableClaims'
 
 const initialFilter = {
@@ -104,10 +104,15 @@ export default function MyClaimsList() {
         </Grid>
       </Grid>
       {open && type === 'nuevo reclamo' && (
-        <CumstomDialog maxWidth={'lg'} open={open && type === 'nuevo reclamo'} disableEscapeKeyDown>
-          <SpeechProvider close={handleClose}>
+        <CumstomDialog
+          maxWidth={'lg'}
+          open={open && type === 'nuevo reclamo'}
+          disableEscapeKeyDown
+          style={{ zIndex: 1000 }}
+        >
+          <ClaimProvider close={handleClose}>
             <StepperCreateClaim handleClose={handleClose} />
-          </SpeechProvider>
+          </ClaimProvider>
         </CumstomDialog>
       )}
     </>

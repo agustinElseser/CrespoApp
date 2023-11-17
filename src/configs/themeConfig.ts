@@ -42,7 +42,7 @@ type ThemeConfig = {
 
 const themeConfig: ThemeConfig = {
   // ** Layout Configs
-  templateName: 'app - Crespo' /* App Name */,
+  templateName: 'App - Crespo' /* App Name */,
   layout: 'vertical' /* vertical | horizontal */,
   mode: 'semi-dark' as Mode /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
   direction: 'ltr' /* ltr | rtl */,

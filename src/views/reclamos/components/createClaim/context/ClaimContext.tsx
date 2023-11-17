@@ -8,6 +8,7 @@ export type ClaimContext = {
   activeStep: number
   query: IQuery
   files: any[]
+  image: any[]
   data: any
   uploading: boolean
   error: boolean
@@ -16,6 +17,7 @@ export type ClaimContext = {
   setData: any
   handleFinished: (value: any) => void
   setError: (boolean: boolean) => void
+  setImages: (file: any) => void
   //handleUploadImage: (value: any) => void;
 }
 
@@ -51,7 +53,7 @@ export interface IuploadedFiles {
   [key: string]: { status: boolean; msg: string }
 }
 
-export const SpeechProvider = ({ children, close }: IChildren) => {
+export const ClaimProvider = ({ children, close }: IChildren) => {
   // ** Hoks
   const { fetch, loading, data: dataUP } = useFetch()
 
@@ -85,12 +87,12 @@ export const SpeechProvider = ({ children, close }: IChildren) => {
   //   }
   // };
 
-  const handleFinished = async () => {
+  const handleFinished = async imagenes => {
     console.log(query)
-
+    const auxQuery = { ...query, imagen: imagenes }
     fetch('usuario-reclamo', {
       method: 'POST',
-      data: query
+      data: auxQuery
     })
       .then(data => {
         toast.success('Reclamo enviado.', {
@@ -118,13 +120,14 @@ export const SpeechProvider = ({ children, close }: IChildren) => {
         data,
         uploading,
         error,
-
+        image,
         //* Metodos
         setActiveStep,
         handleQuery,
         setData,
         handleFinished,
-        setError
+        setError,
+        setImages
       }}
     >
       {children}

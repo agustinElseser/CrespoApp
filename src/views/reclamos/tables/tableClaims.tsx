@@ -77,7 +77,7 @@ const RowOptionsMenu = ({ keyOfActivate, row }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['_id', 'status', 'id', 'image', 'Seguimiento']}
+        ignore={['_id', 'status', 'id', 'img', 'Seguimiento']}
         title={`Detalle reclamo`}
         url='reclamos/mis-reclamos'
       />
@@ -135,7 +135,7 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
         data={row}
         open={openDialog}
         type={type}
-        ignore={['_id', 'status', 'id', 'image', 'Seguimiento']}
+        ignore={['_id', 'status', 'img', 'Seguimiento']}
         title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
         url='reclamos/mis-reclamos'
       />

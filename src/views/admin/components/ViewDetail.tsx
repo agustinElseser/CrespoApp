@@ -106,6 +106,17 @@ export default function ViewDetail({ handleCloseDialog, row, open, type, data, i
 
                   return null
                 })}
+              {dataDetail?.data?.img && (
+                <>
+                  <Typography variant='body1' sx={{ fontWeight: 600, mt: 5 }}>
+                    Imágenes
+                  </Typography>
+
+                  {dataDetail.data.img.map((imageUrl, index) => (
+                    <img key={index} src={imageUrl} alt={`Imagen ${index}`} style={{ maxWidth: 800 }} />
+                  ))}
+                </>
+              )}
               {dataDetail && (
                 <Box sx={{ width: 800, mt: 6 }}>
                   <Typography variant='body1' sx={{ fontWeight: 600 }}>

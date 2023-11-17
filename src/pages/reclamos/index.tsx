@@ -73,7 +73,7 @@ export default function AudioList() {
         <Grid item xs={12}>
           <Card>
             <TableHeaders
-              buttons={isSmallScreen ? [6, 3] : [6, 1, 2, 4, 5]}
+              buttons={isSmallScreen ? [10, 6, 3] : [10, 6, 1, 2, 4, 5]}
               handleFilter={handleFilter}
               toggle={toggleModal}
               handleDowload={handleDowload}

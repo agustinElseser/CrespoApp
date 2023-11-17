@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Box, MenuItem, TextField, Button, Divider, Switch, useTheme, useMediaQuery } from '@mui/material'
+import { Box, MenuItem, TextField, Button, Divider, Switch, useTheme, useMediaQuery, Typography } from '@mui/material'
 
 // ** Icon Imports
 import DatePickers from './DatePickers'
@@ -166,6 +166,16 @@ export default function TableHeaders(props: TableHeardersProps) {
         >
           INFORME SA
         </Button>
+      )
+    },
+    {
+      id: 10,
+      input: (
+        <Box sx={{ border: `1px solid ${theme.palette.text.disabled}`, padding: 2, borderRadius: 1 }}>
+          <Typography color={theme.palette.text.secondary} fontWeight={900} key={10}>
+            Reclamos de vecinos
+          </Typography>
+        </Box>
       )
     }
   ]

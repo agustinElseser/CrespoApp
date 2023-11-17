@@ -15,10 +15,11 @@ import UserDropdown from 'src/@core/layouts/components/shared-components/UserDro
 import NotificationDropdown, {
   NotificationsType
 } from 'src/@core/layouts/components/shared-components/NotificationDropdown'
-import { Button, Dialog } from '@mui/material'
+import { Button, Dialog, Typography, useTheme } from '@mui/material'
 import { useState } from 'react'
 
 import { useAuth } from 'src/hooks/useAuth'
+import dayjs from 'dayjs'
 
 interface Props {
   hidden: boolean
@@ -79,7 +80,7 @@ const AppBarContent = (props: Props) => {
 
   // ** Hooks
   const { user } = useAuth()
-
+  const theme = useTheme()
   // ** State
   const [open, setOpen] = useState<boolean>(false)
 
@@ -89,28 +90,31 @@ const AppBarContent = (props: Props) => {
 
   return (
     <>
-      <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 100 }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          zIndex: 100
+        }}
+      >
         {hidden && !settings.navHidden ? (
-          <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+          <Box className='actions-left' sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton color='inherit' sx={{ ml: -2.75 }} onClick={toggleNavVisibility}>
               <Icon icon='mdi:menu' />
             </IconButton>
           </Box>
         ) : null}
-        <Box sx={{ display: 'flex', gap: 5 }}>
-          {/* <Button size='medium' color={'primary'} variant='outlined'>
-            Consumo
-            <Icon icon='mdi:currency-usd' fontSize={20} />
-            {user?.id_cliente === 416 ? '120,000.20' : '87,020'}
-          </Button> */}
-          {/* {user?.id_cliente === 416 && (
-            <Button size='medium' color={'error'} variant='contained' onClick={() => setOpen(!open)}>
-              Cargar saldo
-            </Button>
-          )} */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant='body1' fontWeight={700} color={theme.palette.text.primary}>
+            CRESPO APP
+          </Typography>
+          <Typography variant='body2' fontWeight={400} color={theme.palette.text.primary}>
+            - {dayjs().format('dddd DD, hh:mm').toLocaleUpperCase()}
+          </Typography>
         </Box>
         <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          {/* <NotificationDropdown settings={settings} notifications={notifications} /> */}
           <UserDropdown settings={settings} />
         </Box>
       </Box>
