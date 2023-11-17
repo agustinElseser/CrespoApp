@@ -20,9 +20,10 @@ interface IRowOptions {
   handleItem: any
   item: string
   url: string
+  rol: string
 }
 
-const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
+const RowOptions = ({ row, item, handleItem, url, rol }: IRowOptions) => {
   // ** States
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [type, setType] = useState<string>('')
@@ -60,7 +61,7 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
           </IconButton>
         </Tooltip>
         <Tooltip title='Eliminar'>
-          <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
+          <IconButton color='error' onClick={() => handleOpenDialog('delete')} disabled={rol !== 'JEFE'}>
             <Icon icon='mdi:delete-alert' fontSize={26} />
           </IconButton>
         </Tooltip>
@@ -100,7 +101,7 @@ const RowOptions = ({ row, item, handleItem, url }: IRowOptions) => {
   )
 }
 
-const RowOptionsResponsive = ({ row, item, handleItem, url }: IRowOptions) => {
+const RowOptionsResponsive = ({ row, item, handleItem, url, rol }: IRowOptions) => {
   // ** States
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [type, setType] = useState<string>('')
@@ -157,7 +158,7 @@ const RowOptionsResponsive = ({ row, item, handleItem, url }: IRowOptions) => {
             </IconButton>
           </Tooltip>
           <Tooltip title='Eliminar'>
-            <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
+            <IconButton color='error' onClick={() => handleOpenDialog('delete')} disabled={rol !== 'JEFE'}>
               <Icon icon='mdi:delete-alert' fontSize={26} />
             </IconButton>
           </Tooltip>
@@ -302,7 +303,7 @@ export const TableCreate: any = (handleItem, item, url, rol) => {
       headerAlign: 'center',
       headerName: 'ACCIONES',
       renderCell: ({ row }: CellType) => (
-        <RowOptions row={row} id={row.id} handleItem={handleItem} item={item} url={url} />
+        <RowOptions row={row} id={row.id} handleItem={handleItem} item={item} url={url} rol={rol} />
       )
     }
   ]
@@ -390,7 +391,7 @@ export const TableCreateResponsive: any = (handleItem, item, url, rol) => {
       headerAlign: 'center',
       headerName: 'ACC',
       renderCell: ({ row }: CellType) => (
-        <RowOptionsResponsive row={row} id={row.id} handleItem={handleItem} item={item} url={url} />
+        <RowOptionsResponsive row={row} id={row.id} handleItem={handleItem} item={item} url={url} rol={rol} />
       )
     }
   ]
@@ -398,77 +399,77 @@ export const TableCreateResponsive: any = (handleItem, item, url, rol) => {
   return tableConfig
 }
 
-export const tableCreateForRoles = (handleItem, item, url) => {
-  const tableConfig = [
-    {
-      flex: 1,
-      field: 'nombre',
-      sortable: false,
-      headerName: 'Nombre',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.nombre}
-          </Typography>
-        )
-      }
-    },
-    {
-      flex: 1,
-      field: 'reclamos_asociados',
-      headerName: 'Reclamos Asociados',
-      sortable: false,
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.reclamos_asociados && row.reclamos_asociados.length >= 1
-              ? row.reclamos_asociados.map(e => e).join(', ')
-              : 'No hay reclamos asoc.'}
-          </Typography>
-        )
-      }
-    },
-    {
-      flex: 1,
-      field: 'id_creador',
-      sortable: false,
-      headerName: 'Creado por',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.id_creador}
-          </Typography>
-        )
-      }
-    },
-    {
-      flex: 1,
-      field: 'fecha_edit',
-      sortable: false,
-      headerName: 'Fecha ',
-      renderCell: ({ row }: CellType) => {
-        return (
-          <Typography noWrap variant='body2'>
-            {row.fecha_editado}
-          </Typography>
-        )
-      }
-    },
-    {
-      minWidth: 150,
-      sortable: false,
-      field: 'actions',
-      headerName: 'ACCIONES',
-      renderCell: ({ row }: CellType) => (
-        <RowOptionsRol row={row} id={row.id} handleItem={handleItem} item={item} url={url} />
-      )
-    }
-  ]
+// export const tableCreateForRoles = (handleItem, item, url) => {
+//   const tableConfig = [
+//     {
+//       flex: 1,
+//       field: 'nombre',
+//       sortable: false,
+//       headerName: 'Nombre',
+//       renderCell: ({ row }: CellType) => {
+//         return (
+//           <Typography noWrap variant='body2'>
+//             {row.nombre}
+//           </Typography>
+//         )
+//       }
+//     },
+//     {
+//       flex: 1,
+//       field: 'reclamos_asociados',
+//       headerName: 'Reclamos Asociados',
+//       sortable: false,
+//       renderCell: ({ row }: CellType) => {
+//         return (
+//           <Typography noWrap variant='body2'>
+//             {row.reclamos_asociados && row.reclamos_asociados.length >= 1
+//               ? row.reclamos_asociados.map(e => e).join(', ')
+//               : 'No hay reclamos asoc.'}
+//           </Typography>
+//         )
+//       }
+//     },
+//     {
+//       flex: 1,
+//       field: 'id_creador',
+//       sortable: false,
+//       headerName: 'Creado por',
+//       renderCell: ({ row }: CellType) => {
+//         return (
+//           <Typography noWrap variant='body2'>
+//             {row.id_creador}
+//           </Typography>
+//         )
+//       }
+//     },
+//     {
+//       flex: 1,
+//       field: 'fecha_edit',
+//       sortable: false,
+//       headerName: 'Fecha ',
+//       renderCell: ({ row }: CellType) => {
+//         return (
+//           <Typography noWrap variant='body2'>
+//             {row.fecha_editado}
+//           </Typography>
+//         )
+//       }
+//     },
+//     {
+//       minWidth: 150,
+//       sortable: false,
+//       field: 'actions',
+//       headerName: 'ACCIONES',
+//       renderCell: ({ row }: CellType) => (
+//         <RowOptionsRol row={row} id={row.id} handleItem={handleItem} item={item} url={url} rol={rol} />
+//       )
+//     }
+//   ]
 
-  return tableConfig
-}
+//   return tableConfig
+// }
 
-const RowOptionsRol = ({ id, row, item, handleItem, url }: IRowOptions) => {
+const RowOptionsRol = ({ id, row, item, handleItem, url, rol }: IRowOptions) => {
   // ** States
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [type, setType] = useState<string>('')
@@ -517,7 +518,7 @@ const RowOptionsRol = ({ id, row, item, handleItem, url }: IRowOptions) => {
         <IconButton color='info' onClick={() => handleOpenDialog('edit')}>
           <Icon icon='mdi:file-document-edit' fontSize={26} />
         </IconButton>
-        <IconButton color='error' onClick={() => handleOpenDialog('delete')}>
+        <IconButton color='error' onClick={() => handleOpenDialog('delete')} disabled={rol !== 'JEFE'}>
           <Icon icon='mdi:delete-alert' fontSize={26} />
         </IconButton>
       </Box>

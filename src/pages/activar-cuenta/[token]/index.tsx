@@ -33,6 +33,7 @@ import Register from 'src/views/login/Register'
 import Login from 'src/views/login/Login'
 import { useRouter } from 'next/router'
 import { useFetch } from 'src/hooks/useFetch'
+import toast from 'react-hot-toast'
 
 // ** Styled Components
 
@@ -86,10 +87,26 @@ export default function ActivateAccount() {
       fetch(`autenticacion/activar-cuenta/${token}`, {
         method: 'PATCH'
       })
+        .then(data => {
+          toast.loading('Redireccionando..', {
+            duration: 3000
+          })
+        })
+        .catch(error => {
+          toast.error(error.response?.data?.msg, {
+            duration: 3000,
+            style: {
+              zIndex: 999999999999
+            }
+          })
+        })
+        .finally(() => {
+          setTimeout(function () {
+            handleRedirect()
+          }, 1000)
+        })
     }
   }, [token])
-
-  console.log(data)
 
   return (
     <>

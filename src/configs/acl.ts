@@ -17,15 +17,21 @@ const defineRulesFor = (role: string) => {
   if (role === 'JEFE') {
     can('manage', 'reclamos')
     can('manage', 'admin')
+    can('manage', 'capataz')
     can('manage', 'super-admin')
+    can('manage', 'perfil')
+  } else if (role === 'CAPATAZ') {
+    can('manage', 'reclamos')
+    can('manage', 'admin')
+    can('manage', 'capataz')
+    can('manage', 'perfil')
+  } else if (role === 'EMPLEADO') {
+    can('manage', 'reclamos')
+    can('manage', 'admin')
     can('manage', 'perfil')
   } else if (role === 'CONTRIBUYENTE') {
     can('manage', 'mis-reclamos')
     can('manage', 'perfil')
-  } else {
-    can('manage', 'perfil')
-    can('manage', 'admin')
-    can('manage', 'reclamos')
   }
 
   return rules

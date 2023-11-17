@@ -42,8 +42,8 @@ const initialState: IQueryFilter = {
   hasta: dayjs(),
   mes: dayjs().startOf('month').startOf('day'),
   year: dayjs(),
-  value: undefined,
-  filtrar: 'find',
+  value: '',
+  filtrar: '',
   inactivos: true
 }
 const initialStateMonth: IQueryMonthFilter = {
@@ -92,7 +92,7 @@ export default function SearchFilter({ filter, service, title, handleFilter }: I
   const handleFind = () => {
     handleFilter('desde', query.desde)
     handleFilter('hasta', query.hasta)
-    handleFilter('value', query.hasta)
+    handleFilter('value', query.value)
 
     setAnchorEl(null)
   }

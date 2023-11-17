@@ -51,7 +51,7 @@ export default function ClaimsTypeList() {
 
   const handleItem = () => {
     if (filter.inactivos) {
-      getData('tipo-reclamo/todas')
+      getData('tipo-reclamo/todos')
     } else {
       getData('tipo-reclamo')
     }
@@ -71,14 +71,7 @@ export default function ClaimsTypeList() {
   const inputs: IFormItem[] = [
     {
       name: 'nombre',
-      label: 'Nombre del area'
-    },
-    {
-      name: 'tipos_reclamos',
-      label: 'Reclamos asosiados',
-      select: true,
-      multiple: true,
-      options: ClaimsType.data
+      label: 'Nombre del tipo de reclamo'
     }
   ]
 
@@ -155,7 +148,7 @@ export default function ClaimsTypeList() {
           title='tipo de reclamo'
           handleCloseDialog={handleClose}
           inputs={inputs}
-          url={'tipo de reclamo'}
+          url={'tipo-reclamo'}
         />
       )}
     </>

@@ -7,6 +7,7 @@ import { useState, MouseEvent } from 'react'
 import { Icon } from '@iconify/react'
 import ViewDetail from 'src/views/admin/components/ViewDetail'
 import dayjs from 'dayjs'
+import DeleteForm from 'src/views/admin/components/DeleteForm'
 
 interface CellType {
   row: any
@@ -65,22 +66,34 @@ const RowOptionsMenu = ({ keyOfActivate, row }: IRowOptions) => {
           <IconButton color='info' onClick={() => handleOpenDialog('view-detail')}>
             <Icon icon='mdi:file-eye' fontSize={26} />
           </IconButton>
-          <IconButton color='error' disabled={row.estado !== 'ENVIADO'}>
+          <IconButton color='error' disabled={row.estado !== 'ENVIADO'} onClick={() => handleOpenDialog('delete')}>
             <Icon icon='mdi:delete-alert' fontSize={26} />
           </IconButton>
         </Box>
       </Menu>
-      <ViewDetail
-        handleCloseDialog={handleCloseDialog}
-        keyOfActivate={keyOfActivate}
-        row={row}
-        data={row}
-        open={openDialog}
-        type={type}
-        ignore={['_id', 'status', 'id', 'img', 'Seguimiento']}
-        title={`Detalle reclamo`}
-        url='reclamos/mis-reclamos'
-      />
+      {openDialog && type === 'view-detail' && (
+        <ViewDetail
+          handleCloseDialog={handleCloseDialog}
+          keyOfActivate={keyOfActivate}
+          row={row}
+          data={row}
+          open={openDialog}
+          type={type}
+          ignore={['_id', 'status', 'img', 'Seguimiento']}
+          title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
+          url='reclamos/mis-reclamos'
+        />
+      )}
+      {openDialog && type === 'delete' && (
+        <DeleteForm
+          open={openDialog && type === 'delete'}
+          type='ELIMINAR'
+          title={'reclamo'}
+          handleCloseDialog={handleCloseDialog}
+          id={row.id}
+          url={'reclamos/mis-reclamos'}
+        />
+      )}
     </>
   )
 }
@@ -123,22 +136,34 @@ const RowOptions = ({ keyOfActivate, row }: IRowOptions) => {
         <IconButton color='info' onClick={() => handleOpenDialog('view-detail')}>
           <Icon icon='mdi:file-eye' fontSize={26} />
         </IconButton>
-        <IconButton color='error' disabled={row.estado !== 'ENVIADO'}>
+        <IconButton color='error' disabled={row.estado !== 'ENVIADO'} onClick={() => handleOpenDialog('delete')}>
           <Icon icon='mdi:delete-alert' fontSize={26} />
         </IconButton>
       </Box>
 
-      <ViewDetail
-        handleCloseDialog={handleCloseDialog}
-        keyOfActivate={keyOfActivate}
-        row={row}
-        data={row}
-        open={openDialog}
-        type={type}
-        ignore={['_id', 'status', 'img', 'Seguimiento']}
-        title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
-        url='reclamos/mis-reclamos'
-      />
+      {openDialog && type === 'view-detail' && (
+        <ViewDetail
+          handleCloseDialog={handleCloseDialog}
+          keyOfActivate={keyOfActivate}
+          row={row}
+          data={row}
+          open={openDialog}
+          type={type}
+          ignore={['_id', 'status', 'img', 'Seguimiento']}
+          title={`Detalle reclamo - ${row.tipo_reclamo.nombre}`}
+          url='reclamos/mis-reclamos'
+        />
+      )}
+      {openDialog && type === 'delete' && (
+        <DeleteForm
+          open={openDialog && type === 'delete'}
+          type='ELIMINAR'
+          title={'reclamo'}
+          handleCloseDialog={handleCloseDialog}
+          id={row.id}
+          url={'reclamos/mis-reclamos'}
+        />
+      )}
     </>
   )
 }

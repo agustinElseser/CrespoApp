@@ -80,7 +80,9 @@ export default function TableHeaders(props: TableHeardersProps) {
     },
     {
       id: 3,
-      input: <SearchFilter key={3} title={props.search} handleFilter={handleFilter} filter={filter} service={service} />
+      input: (
+        <SearchFilter key={66} title={props.search} handleFilter={handleFilter} filter={filter} service={service} />
+      )
     },
     {
       id: 13,

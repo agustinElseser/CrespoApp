@@ -62,18 +62,16 @@ export default function MyClaimsList() {
     getData()
   }, [open, filter?.desde, filter?.hasta, pageSize, currentPage, filter?.value])
 
-  // const filteredData = useMemo(() => {
-  //   const dataToFilter = dataGet?.data
+  const filteredData = useMemo(() => {
+    const dataToFilter = dataGet?.data
 
-  //   if (dataToFilter) {
-  //     const dataFilter = applyFilter(dataToFilter, filter)
-  //     setData(dataFilter)
+    if (dataToFilter) {
+      const dataFilter = applyFilter(dataToFilter, filter)
+      setData(dataFilter)
 
-  //     return dataFilter
-  //   }
-  // }, [filter, dataGet.data])
-
-  console.log(filter)
+      return dataFilter
+    }
+  }, [filter, dataGet.data])
 
   return (
     <>
@@ -89,7 +87,7 @@ export default function MyClaimsList() {
               filter={filter}
             />
             <DataGrid
-              rows={dataGet?.data ?? []}
+              rows={data ?? []}
               columns={isSmallScreen ? tableClaimsResponsive : tableClaims}
               autoHeight
               disableColumnMenu

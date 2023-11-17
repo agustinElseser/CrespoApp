@@ -6,6 +6,7 @@ export function applyFilter(data, filter) {
   const desdeFormatted = filter.desde?.format('YYYY-MM-DD') ?? null
   const hastaFormatted = filter.hasta?.format('YYYY-MM-DD') ?? null
   const { value } = filter
+  console.log('value filter', value)
 
   return data?.filter(item => {
     const fechaValida =

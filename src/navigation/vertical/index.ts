@@ -76,13 +76,13 @@ const navigation = (): VerticalNavItemsType => {
       title: 'AREAS',
       icon: 'mdi:order-bool-descending-variant',
       path: '/administracion/areas',
-      subject: 'admin'
+      subject: 'capataz'
     },
     {
       title: 'TIPOS DE RECLAMOS',
       icon: 'mdi:comment-alert',
       path: '/administracion/tipos-de-reclamos',
-      subject: 'admin'
+      subject: 'capataz'
     },
     {
       title: 'USUARIOS',
